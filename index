@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2XU 品牌數據看板</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .sidebar-item:hover { background-color: #374151; }
+        .active-tab { background-color: #2563eb; color: white; }
+        .loading-overlay { background: rgba(255,255,255,0.8); z-index: 50; }
+        canvas { max-height: 350px; }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+
+    <div class="flex flex-col md:flex-row">
+        <div class="bg-gray-800 shadow-lg h-16 fixed bottom-0 md:relative md:h-screen z-10 w-full md:w-64">
+            <div class="md:mt-12 md:w-64 md:fixed md:left-0 md:top-0 content-center md:content-start text-left justify-between">
+                <div class="p-5 text-white text-xl font-bold border-b border-gray-700 mb-4">
+                    <i class="fas fa-chart-line mr-2"></i> 2XU Dashboard
+                </div>
+                <ul class="list-reset flex flex-row md:flex-col py-0 md:py-3 px-1 md:px-2 text-center md:text-left">
+                    <li class="mr-3 flex-1">
+                        <a href="#" onclick="switchTab('overview')" id="tab-overview" class="block py-1 md:py-3 pl-1 align-middle text-white no-underline border-b-2 border-gray-800 hover:border-pink-500 sidebar-item rounded p-2 active-tab">
+                            <i class="fas fa-tasks pr-0 md:pr-3"></i><span class="pb-1 md:pb-0 text-xs md:text-base block md:inline-block">總覽數據</span>
+                        </a>
+                    </li>
+                    <li class="mr-3 flex-1">
+                        <a href="#" onclick="switchTab('details')" id="tab-details" class="block py-1 md:py-3 pl-1 align-middle text-white no-underline border-b-2 border-gray-800 hover:border-purple-500 sidebar-item rounded p-2">
+                            <i class="fa fa-envelope pr-0 md:pr-3"></i><span class="pb-1 md:pb-0 text-xs md:text-base block md:inline-block">詳細資料表</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="main-content flex-1 bg-gray-100 mt-12 md:mt-2 pb-24 md:pb-5">
+            <div id="loading" class="fixed inset-0 loading-overlay flex items-center justify-center">
+                <div class="text-center">
+                    <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-2"></div>
+                    <p class="text-gray-600">讀取品牌授權資料中...</p>
+                </div>
+            </div>
+
+            <div class="bg-gray-800 pt-3">
+                <div class="rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800 p-4 shadow text-2xl text-white">
+                    <h3 class="font-bold pl-2" id="brand-title">行銷績效看板</h3>
+                </div>
+            </div>
+
+            <div id="content-area" class="p-6">
+                <div id="view-overview">
+                    <div class="flex flex-wrap">
+                        <div class="w-full md:w-1/2 xl:w-1/3 p-6">
+                            <div class="bg-gradient-to-b from-green-200 to-green-100 border-b-4 border-green-600 rounded-lg shadow-xl p-5">
+                                <div class="flex flex-row items-center">
+                                    <div class="flex-shrink pr-4"><div class="rounded-full p-5 bg-green-600"><i class="fa fa-wallet fa-2x fa-inverse"></i></div></div>
+                                    <div class="flex-1 text-right md:text-center">
+                                        <h5 class="font-bold uppercase text-gray-600">總廣告花費</h5>
+                                        <h3 class="font-bold text-3xl" id="stat-spend">$0</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-1/2 xl:w-1/3 p-6">
+                            <div class="bg-gradient-to-b from-blue-200 to-blue-100 border-b-4 border-blue-600 rounded-lg shadow-xl p-5">
+                                <div class="flex flex-row items-center">
+                                    <div class="flex-shrink pr-4"><div class="rounded-full p-5 bg-blue-600"><i class="fas fa-users fa-2x fa-inverse"></i></div></div>
+                                    <div class="flex-1 text-right md:text-center">
+                                        <h5 class="font-bold uppercase text-gray-600">總曝光數</h5>
+                                        <h3 class="font-bold text-3xl" id="stat-impressions">0</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-row flex-wrap flex-grow mt-2">
+                        <div class="w-full md:w-1/2 p-6">
+                            <div class="bg-white border-transparent rounded-lg shadow-xl">
+                                <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
+                                    <h5 class="font-bold uppercase text-gray-600">渠道花費佔比</h5>
+                                </div>
+                                <div class="p-5"><canvas id="chart-pie"></canvas></div>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-1/2 p-6">
+                            <div class="bg-white border-transparent rounded-lg shadow-xl">
+                                <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
+                                    <h5 class="font-bold uppercase text-gray-600">各品牌花費對比</h5>
+                                </div>
+                                <div class="p-5"><canvas id="chart-bar"></canvas></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="view-details" class="hidden">
+                    <div class="bg-white border-transparent rounded-lg shadow-xl">
+                        <div class="bg-gray-800 text-white uppercase border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-3">
+                            <h5 class="font-bold">原始數據明細</h5>
+                        </div>
+                        <div class="p-5 overflow-x-auto">
+                            <table id="table-detail" class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-gray-100">
+                                        <th class="py-4 px-6 font-bold text-sm text-gray-700 border-b border-gray-200">來源</th>
+                                        <th class="py-4 px-6 font-bold text-sm text-gray-700 border-b border-gray-200">品牌</th>
+                                        <th class="py-4 px-6 font-bold text-sm text-gray-700 border-b border-gray-200">花費</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 設定區
+        const GAS_API_URL = "你的_GAS_URL_貼在這裡"; 
+
+        let globalData = [];
+
+        async function init() {
+            const token = new URLSearchParams(window.location.search).get('token');
+            if (!token) {
+                alert("缺少憑證！");
+                return;
+            }
+
+            try {
+                const response = await fetch(`${GAS_API_URL}?token=${token}`);
+                globalData = await response.json();
+                if (globalData.error) throw new Error(globalData.error);
+                
+                document.getElementById('loading').classList.add('hidden');
+                renderDashboard();
+            } catch (e) {
+                alert("錯誤: " + e.message);
+            }
+        }
+
+        function switchTab(tab) {
+            document.getElementById('view-overview').classList.add('hidden');
+            document.getElementById('view-details').classList.add('hidden');
+            document.getElementById('tab-overview').classList.remove('active-tab');
+            document.getElementById('tab-details').classList.remove('active-tab');
+
+            document.getElementById(`view-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-${tab}`).classList.add('active-tab');
+        }
+
+        function renderDashboard() {
+            let totalSpend = 0;
+            let totalImp = 0;
+            let sourceMap = {};
+            let brandMap = {};
+
+            globalData.forEach(item => {
+                let spend = Number(item["花費金額 (TWD)"] || 0);
+                let imp = Number(item["曝光次數"] || 0);
+                totalSpend += spend;
+                totalImp += imp;
+
+                sourceMap[item._DataSource] = (sourceMap[item._DataSource] || 0) + spend;
+                brandMap[item["品牌"]] = (brandMap[item["品牌"]] || 0) + spend;
+
+                // 填充表格
+                const row = `<tr>
+                    <td class="p-3 border-b">${item._DataSource}</td>
+                    <td class="p-3 border-b">${item["品牌"]}</td>
+                    <td class="p-3 border-b">$${spend.toLocaleString()}</td>
+                </tr>`;
+                document.querySelector("#table-detail tbody").innerHTML += row;
+            });
+
+            document.getElementById('stat-spend').innerText = "$" + totalSpend.toLocaleString();
+            document.getElementById('stat-impressions').innerText = totalImp.toLocaleString();
+
+            // 畫圖：圓餅圖 (渠道)
+            new Chart(document.getElementById('chart-pie'), {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(sourceMap),
+                    datasets: [{ data: Object.values(sourceMap), backgroundColor: ['#3b82f6', '#10b981', '#f59e0b'] }]
+                }
+            });
+
+            // 畫圖：長條圖 (品牌)
+            new Chart(document.getElementById('chart-bar'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(brandMap),
+                    datasets: [{ label: '廣告預算消耗', data: Object.values(brandMap), backgroundColor: '#6366f1' }]
+                }
+            });
+        }
+
+        init();
+    </script>
+</body>
+</html>
