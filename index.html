@@ -3,206 +3,382 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2XU 品牌數據看板</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>2XU — Ad & Revenue Report</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
+
     <style>
-        .sidebar-item:hover { background-color: #374151; }
-        .active-tab { background-color: #2563eb; color: white; }
-        .loading-overlay { background: rgba(255,255,255,0.8); z-index: 50; }
-        canvas { max-height: 350px; }
+        /* 直接複寫你提供的 Apple Premium Flat Theme 樣式 */
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,600;1,9..40,700&family=DM+Mono:wght@300;400;500;600&display=swap');
+
+        :root {
+            --ink: #0f172a; --ink2: #334155; --ink3: #64748b; --ink4: #94a3b8;
+            --paper: #f8fafc; --paper2: #f1f5f9; --paper3: #e2e8f0;
+            --rule: #e2e8f0; --rule2: #cbd5e0;
+            --accent: #0f3a5e; --accent-hover: #185a90; --accent-l: #f0f7ff; --accent-m: #3b82f6;
+            --ok: #059669; --ok-bg: #d1fae5; --warn: #d97706; --warn-bg: #fef3c7; --red: #dc2626; --red-bg: #fee2e2;
+            --r: 8px; --r2: 12px;
+        }
+
+        *{box-sizing:border-box;margin:0;padding:0;}
+        body{background:var(--paper);color:var(--ink);font-family:'DM Sans', -apple-system, sans-serif;font-size:13px;line-height:1.5;min-height:100vh;}
+
+        /* Header & Control Bar */
+        header{background:#ffffff;border-bottom:1px solid var(--rule);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40;}
+        .wm{display:flex;align-items:baseline;gap:8px}
+        .wm-n{font-size:18px;font-weight:700;letter-spacing:-.5px;color:var(--accent)}
+        .wm-s{font-size:13px;color:var(--ink3);font-weight:500}
+        .hdr-r{display:flex;align-items:center;gap:16px}
+        .sdot{width:6px;height:6px;border-radius:50%;background:var(--ok);animation:breathe 3s ease-in-out infinite}
+        @keyframes breathe{0%,100%{opacity:1}50%{opacity:.3}}
+        .sts{font-size:12px;color:var(--ink3);font-family:'DM Mono',monospace;}
+
+        .ctrlbar{background:#ffffff;border-bottom:1px solid var(--rule);padding:16px 32px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+        .cg{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+        .cl{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--ink4);white-space:nowrap;}
+        .chip{font-family:inherit; font-size:12px; padding:6px 16px; border-radius:20px; border:1px solid var(--rule2); background:#fff; color:var(--ink2); cursor:pointer; font-weight:600;}
+        .chip.on{background:var(--accent); border-color:var(--accent); color:#fff;}
+
+        /* UI Components from your file */
+        main{padding:32px;max-width:1440px;margin:0 auto;}
+        .roi-hero{background:#fff; border:1px solid var(--rule); border-radius:var(--r2); padding:32px; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap;}
+        .roi-big{font-size:64px; font-weight:300; letter-spacing:-2.5px; color:var(--accent); line-height:1; display:flex; align-items:baseline; gap:8px;}
+        .roi-label{font-size:13px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--ink3); margin-bottom:8px;}
+        .roi-meta{display:flex; flex-direction:column; gap:4px;}
+        .roi-right{display:flex; gap:40px; align-items:flex-end;}
+        .roi-mini-label{font-size:11px; font-weight:700; color:var(--ink4); text-transform:uppercase;}
+        .roi-mini-val{font-size:28px; font-weight:300; color:var(--ink); line-height:1;}
+
+        .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}
+        .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px}
+        .kcard{background:#fff; border:1px solid var(--rule); border-radius:var(--r2); padding:24px;}
+        .kl{font-size:11px; font-weight:700; text-transform:uppercase; color:var(--ink4); margin-bottom:12px;}
+        .kv{font-size:32px; font-weight:300; color:var(--accent); line-height:1;}
+
+        /* Visual Funnel */
+        .funnel-wrap { background:#fff; border:1px solid var(--rule); border-radius:var(--r2); display:flex; align-items:center; justify-content:space-between; padding:32px 48px; margin-bottom:24px; }
+        .funnel-step { display:flex; flex-direction:column; align-items:center; width:220px; }
+        .f-lbl { font-size:11px; font-weight:700; text-transform:uppercase; color:var(--ink4); margin-bottom:12px;}
+        .f-val { font-size:48px; font-weight:300; color:var(--accent); line-height:1;}
+        .f-pill { font-size:11px; font-weight:700; color:var(--ink3); background:var(--paper); border:1px solid var(--rule); padding:6px 16px; border-radius:20px; margin-top:8px;}
+        .f-bar-track { width:100%; height:8px; background:var(--paper3); border-radius:4px; margin-bottom:16px; overflow:hidden;}
+        .f-bar-fill { height:100%; background:var(--accent-m); transition:width 1s ease;}
+
+        .sec{display:flex;align-items:center;gap:16px;margin:48px 0 16px}
+        .sec-n{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent);white-space:nowrap}
+        .sec-r{flex:1;height:1px;background:var(--rule)}
+
+        /* Table */
+        .tbl-wrap{background:#fff; border:1px solid var(--rule); border-radius:var(--r2); overflow-x:auto;}
+        table{width:100%;border-collapse:collapse;font-size:12px}
+        thead th{text-align:left;font-size:11px;font-weight:700;color:var(--ink4);padding:14px 16px;border-bottom:1px solid var(--rule2);text-transform:uppercase;}
+        tbody td{padding:14px 16px;border-bottom:1px solid var(--rule);color:var(--ink2);font-weight:500}
+        
+        #sbar{display:none;padding:12px 32px;font-size:12px;font-weight:600;}
+        #sbar.loading{display:flex;background:var(--accent-l);color:var(--accent-m)}
+
+        /* KPI Progress */
+        .kpi-prog-wrap { width:100%; height:6px; background:var(--paper3); border-radius:3px; margin-top:12px; overflow:hidden;}
+        .kpi-prog-fill { height:100%; border-radius:3px; transition:width 0.8s ease;}
+        .kpi-prog-text { font-size:11px; color:var(--ink3); margin-top:6px; display:flex; justify-content:space-between; font-weight:500;}
+
+        /* Charts */
+        .row2{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;margin-bottom:16px}
+        .card{background:#fff; border:1px solid var(--rule); border-radius:var(--r2); padding:24px;}
+        .ct-n{font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;}
     </style>
 </head>
-<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+<body>
 
-    <div class="flex flex-col md:flex-row">
-        <div class="bg-gray-800 shadow-lg h-16 fixed bottom-0 md:relative md:h-screen z-10 w-full md:w-64">
-            <div class="md:mt-12 md:w-64 md:fixed md:left-0 md:top-0 content-center md:content-start text-left justify-between">
-                <div class="p-5 text-white text-xl font-bold border-b border-gray-700 mb-4">
-                    <i class="fas fa-chart-line mr-2"></i> 2XU Dashboard
-                </div>
-                <ul class="list-reset flex flex-row md:flex-col py-0 md:py-3 px-1 md:px-2 text-center md:text-left">
-                    <li class="mr-3 flex-1">
-                        <a href="#" onclick="switchTab('overview')" id="tab-overview" class="block py-1 md:py-3 pl-1 align-middle text-white no-underline border-b-2 border-gray-800 hover:border-pink-500 sidebar-item rounded p-2 active-tab">
-                            <i class="fas fa-tasks pr-0 md:pr-3"></i><span class="pb-1 md:pb-0 text-xs md:text-base block md:inline-block">總覽數據</span>
-                        </a>
-                    </li>
-                    <li class="mr-3 flex-1">
-                        <a href="#" onclick="switchTab('details')" id="tab-details" class="block py-1 md:py-3 pl-1 align-middle text-white no-underline border-b-2 border-gray-800 hover:border-purple-500 sidebar-item rounded p-2">
-                            <i class="fa fa-envelope pr-0 md:pr-3"></i><span class="pb-1 md:pb-0 text-xs md:text-base block md:inline-block">詳細資料表</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+<header>
+  <div class="wm">
+    <span class="wm-n">2XU</span>
+    <span class="wm-d">/</span>
+    <span class="wm-s">Ad &amp; Revenue Report</span>
+  </div>
+  <div class="hdr-r">
+    <div class="sdot"></div>
+    <span class="sts" id="last-upd">SYNCING...</span>
+    <button class="chip on" onclick="location.reload()">Sync Data</button>
+  </div>
+</header>
+
+<div id="sbar"></div>
+
+<div class="ctrlbar">
+  <div class="cg">
+    <span class="cl">Period</span>
+    <button class="chip" onclick="filterByDays(1, this)">Yesterday</button>
+    <button class="chip on" onclick="filterByDays(7, this)">7 days</button>
+    <button class="chip" onclick="filterByDays(30, this)">30 days</button>
+  </div>
+  <div class="cg" id="brand-chips">
+    <span class="cl">Brand</span>
+    </div>
+</div>
+
+<main>
+    <div class="sec" style="margin-top:0"><span class="sec-n">L1: ROI OVERVIEW</span><div class="sec-r"></div></div>
+    <div class="roi-hero">
+      <div class="roi-hero-left">
+        <div>
+          <div class="roi-label">ROI (NET / SPEND)</div>
+          <div class="roi-big" id="roi-big">—</div>
         </div>
+        <div class="roi-meta">
+          <span style="color:var(--ink3)">Net Revenue <strong id="roi-net" style="color:var(--accent)">—</strong></span>
+          <span style="color:var(--ink3)">Ad Spend <strong id="roi-sp" style="color:var(--accent)">—</strong></span>
+        </div>
+      </div>
+      <div class="roi-right">
+        <div class="roi-mini">
+          <div class="roi-mini-label">ROAS</div>
+          <div class="roi-mini-val" id="roas-mini">—</div>
+        </div>
+        <div class="roi-mini">
+          <div class="roi-mini-label">CVR%</div>
+          <div class="roi-mini-val" id="cvr-mini">—</div>
+        </div>
+        <div class="roi-mini">
+          <div class="roi-mini-label">CTR%</div>
+          <div class="roi-mini-val" id="ctr-mini">—</div>
+        </div>
+      </div>
+    </div>
 
-        <div class="main-content flex-1 bg-gray-100 mt-12 md:mt-2 pb-24 md:pb-5">
-            <div id="loading" class="fixed inset-0 loading-overlay flex items-center justify-center">
-                <div class="text-center">
-                    <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-2"></div>
-                    <p class="text-gray-600">讀取品牌授權資料中...</p>
-                </div>
-            </div>
+    <div class="sec"><span class="sec-n">L2: BUSINESS DRIVERS</span><div class="sec-r"></div></div>
+    <div class="grid-3">
+      <div class="kcard"><div class="kl">CAC (Acquisition Cost)</div><div class="kv" id="k-cac">—</div></div>
+      <div class="kcard"><div class="kl">AOV (Avg Order Value)</div><div class="kv" id="k-aov">—</div></div>
+      <div class="kcard"><div class="kl">ROAS (Ads Attributed)</div><div class="kv" id="k-roas">—</div></div>
+    </div>
+    <div class="grid-4">
+        <div class="kcard">
+            <div class="kl">NET REVENUE</div><div class="kv" id="k-net" style="color:var(--accent-m)">—</div>
+            <div id="k-net-prog"></div>
+        </div>
+        <div class="kcard"><div class="kl">TOTAL SPEND</div><div class="kv" id="k-sp">—</div></div>
+        <div class="kcard"><div class="kl">LINK CLICKS</div><div class="kv" id="k-clk">—</div></div>
+        <div class="kcard"><div class="kl">CONVERSIONS</div><div class="kv" id="k-purch">—</div></div>
+    </div>
 
-            <div class="bg-gray-800 pt-3">
-                <div class="rounded-tl-3xl bg-gradient-to-r from-blue-900 to-gray-800 p-4 shadow text-2xl text-white">
-                    <h3 class="font-bold pl-2" id="brand-title">行銷績效看板</h3>
-                </div>
-            </div>
+    <div class="sec"><span class="sec-n">VISUAL FUNNEL</span><div class="sec-r"></div></div>
+    <div class="funnel-wrap">
+      <div class="funnel-step">
+        <span class="f-lbl">1. CLICKS</span>
+        <div class="f-bar-track"><div class="f-bar-fill" style="width:100%"></div></div>
+        <span class="f-val" id="f-clk">—</span>
+      </div>
+      <div style="font-size:24px; color:var(--rule2)">➔</div>
+      <div class="funnel-step">
+        <span class="f-lbl">2. ADD TO CART</span>
+        <div class="f-bar-track"><div class="f-bar-fill" id="fb-atc" style="width:0%"></div></div>
+        <span class="f-val" id="f-atc">—</span>
+        <span class="f-pill" id="f-atc-rate">—</span>
+      </div>
+      <div style="font-size:24px; color:var(--rule2)">➔</div>
+      <div class="funnel-step">
+        <span class="f-lbl">3. PURCHASES</span>
+        <div class="f-bar-track"><div class="f-bar-fill" id="fb-purch" style="width:0%"></div></div>
+        <span class="f-val" id="f-purch">—</span>
+        <span class="f-pill" id="f-purch-rate">—</span>
+      </div>
+    </div>
 
-            <div id="content-area" class="p-6">
-                <div id="view-overview">
-                    <div class="flex flex-wrap">
-                        <div class="w-full md:w-1/2 xl:w-1/3 p-6">
-                            <div class="bg-gradient-to-b from-green-200 to-green-100 border-b-4 border-green-600 rounded-lg shadow-xl p-5">
-                                <div class="flex flex-row items-center">
-                                    <div class="flex-shrink pr-4"><div class="rounded-full p-5 bg-green-600"><i class="fa fa-wallet fa-2x fa-inverse"></i></div></div>
-                                    <div class="flex-1 text-right md:text-center">
-                                        <h5 class="font-bold uppercase text-gray-600">總廣告花費</h5>
-                                        <h3 class="font-bold text-3xl" id="stat-spend">$0</h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-full md:w-1/2 xl:w-1/3 p-6">
-                            <div class="bg-gradient-to-b from-blue-200 to-blue-100 border-b-4 border-blue-600 rounded-lg shadow-xl p-5">
-                                <div class="flex flex-row items-center">
-                                    <div class="flex-shrink pr-4"><div class="rounded-full p-5 bg-blue-600"><i class="fas fa-users fa-2x fa-inverse"></i></div></div>
-                                    <div class="flex-1 text-right md:text-center">
-                                        <h5 class="font-bold uppercase text-gray-600">總曝光數</h5>
-                                        <h3 class="font-bold text-3xl" id="stat-impressions">0</h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-row flex-wrap flex-grow mt-2">
-                        <div class="w-full md:w-1/2 p-6">
-                            <div class="bg-white border-transparent rounded-lg shadow-xl">
-                                <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
-                                    <h5 class="font-bold uppercase text-gray-600">渠道花費佔比</h5>
-                                </div>
-                                <div class="p-5"><canvas id="chart-pie"></canvas></div>
-                            </div>
-                        </div>
-                        <div class="w-full md:w-1/2 p-6">
-                            <div class="bg-white border-transparent rounded-lg shadow-xl">
-                                <div class="bg-gradient-to-b from-gray-300 to-gray-100 uppercase text-gray-800 border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-2">
-                                    <h5 class="font-bold uppercase text-gray-600">各品牌花費對比</h5>
-                                </div>
-                                <div class="p-5"><canvas id="chart-bar"></canvas></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="view-details" class="hidden">
-                    <div class="bg-white border-transparent rounded-lg shadow-xl">
-                        <div class="bg-gray-800 text-white uppercase border-b-2 border-gray-300 rounded-tl-lg rounded-tr-lg p-3">
-                            <h5 class="font-bold">原始數據明細</h5>
-                        </div>
-                        <div class="p-5 overflow-x-auto">
-                            <table id="table-detail" class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr class="bg-gray-100">
-                                        <th class="py-4 px-6 font-bold text-sm text-gray-700 border-b border-gray-200">來源</th>
-                                        <th class="py-4 px-6 font-bold text-sm text-gray-700 border-b border-gray-200">品牌</th>
-                                        <th class="py-4 px-6 font-bold text-sm text-gray-700 border-b border-gray-200">花費</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="sec"><span class="sec-n">TRENDS & BREAKDOWN</span><div class="sec-r"></div></div>
+    <div class="row2">
+        <div class="card">
+            <div class="ct-n">Spend & ROI Trend</div>
+            <div style="height:300px; margin-top:20px;"><canvas id="trendChart"></canvas></div>
+        </div>
+        <div class="card">
+            <div class="ct-n">Channel Distribution</div>
+            <div style="height:300px; margin-top:20px;"><canvas id="pieChart"></canvas></div>
         </div>
     </div>
 
-    <script>
-        // 設定區
-        const GAS_API_URL = "https://script.google.com/macros/s/AKfycbwV29V5nVRp259_QX_kBNE2iQ85l-o0M_VHvPTPQwJDvgOCyd_tQxLRJUdDBvRsu20V/exec"; 
+    <div class="tbl-wrap">
+        <table id="main-table">
+            <thead>
+                <tr>
+                    <th>Source</th><th>Date</th><th>Brand</th><th>Spend</th><th>Revenue</th><th>ROAS</th><th>ROI</th>
+                </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+        </table>
+    </div>
+</main>
 
-        let globalData = [];
+<script>
+    // ==========================================
+    // 🔧 設定區：請替換成你的 GAS 正式部署網址
+    // ==========================================
+    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbwV29V5nVRp259_QX_kBNE2iQ85l-o0M_VHvPTPQwJDvgOCyd_tQxLRJUdDBvRsu20V/exec";
 
-        async function init() {
-            const token = new URLSearchParams(window.location.search).get('token');
-            if (!token) {
-                alert("缺少憑證！");
-                return;
-            }
+    let RAW_DATA = [];
+    let FILTERED_DATA = [];
+    let SELECTED_BRAND = 'all';
+    let charts = {};
 
-            try {
-                const response = await fetch(`${GAS_API_URL}?token=${token}`);
-                globalData = await response.json();
-                if (globalData.error) throw new Error(globalData.error);
-                
-                document.getElementById('loading').classList.add('hidden');
-                renderDashboard();
-            } catch (e) {
-                alert("錯誤: " + e.message);
-            }
-        }
+    const fmtN = n => '$' + Math.round(n).toLocaleString();
+    const fmtI = n => Math.round(n).toLocaleString();
 
-        function switchTab(tab) {
-            document.getElementById('view-overview').classList.add('hidden');
-            document.getElementById('view-details').classList.add('hidden');
-            document.getElementById('tab-overview').classList.remove('active-tab');
-            document.getElementById('tab-details').classList.remove('active-tab');
+    async function loadData() {
+        const token = new URLSearchParams(window.location.search).get('token');
+        if (!token) { alert("Missing Token"); return; }
 
-            document.getElementById(`view-${tab}`).classList.remove('hidden');
-            document.getElementById(`tab-${tab}`).classList.add('active-tab');
-        }
+        document.getElementById('sbar').className = 'loading';
+        document.getElementById('sbar').innerText = "Connecting to Secure Data Engine...";
 
-        function renderDashboard() {
-            let totalSpend = 0;
-            let totalImp = 0;
-            let sourceMap = {};
-            let brandMap = {};
+        try {
+            const res = await fetch(`${https://script.google.com/macros/s/AKfycbwV29V5nVRp259_QX_kBNE2iQ85l-o0M_VHvPTPQwJDvgOCyd_tQxLRJUdDBvRsu20V/exec}?token=${token}`);
+            RAW_DATA = await res.json();
+            
+            if (RAW_DATA.error) throw new Error(RAW_DATA.error);
 
-            globalData.forEach(item => {
-                let spend = Number(item["花費金額 (TWD)"] || 0);
-                let imp = Number(item["曝光次數"] || 0);
-                totalSpend += spend;
-                totalImp += imp;
-
-                sourceMap[item._DataSource] = (sourceMap[item._DataSource] || 0) + spend;
-                brandMap[item["品牌"]] = (brandMap[item["品牌"]] || 0) + spend;
-
-                // 填充表格
-                const row = `<tr>
-                    <td class="p-3 border-b">${item._DataSource}</td>
-                    <td class="p-3 border-b">${item["品牌"]}</td>
-                    <td class="p-3 border-b">$${spend.toLocaleString()}</td>
-                </tr>`;
-                document.querySelector("#table-detail tbody").innerHTML += row;
+            // 動態生成品牌 Chip (基於 Token 允許的品牌)
+            const brands = [...new Set(RAW_DATA.map(d => d["品牌"]))];
+            let bHtml = `<button class="chip on" onclick="filterBrand('all', this)">All</button>`;
+            brands.forEach(b => {
+                bHtml += `<button class="chip" onclick="filterBrand('${b}', this)">${b}</button>`;
             });
+            document.getElementById('brand-chips').innerHTML += bHtml;
 
-            document.getElementById('stat-spend').innerText = "$" + totalSpend.toLocaleString();
-            document.getElementById('stat-impressions').innerText = totalImp.toLocaleString();
-
-            // 畫圖：圓餅圖 (渠道)
-            new Chart(document.getElementById('chart-pie'), {
-                type: 'pie',
-                data: {
-                    labels: Object.keys(sourceMap),
-                    datasets: [{ data: Object.values(sourceMap), backgroundColor: ['#3b82f6', '#10b981', '#f59e0b'] }]
-                }
-            });
-
-            // 畫圖：長條圖 (品牌)
-            new Chart(document.getElementById('chart-bar'), {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(brandMap),
-                    datasets: [{ label: '廣告預算消耗', data: Object.values(brandMap), backgroundColor: '#6366f1' }]
-                }
-            });
+            document.getElementById('sbar').style.display = 'none';
+            document.getElementById('last-upd').innerText = new Date().toLocaleString();
+            
+            filterByDays(7); // 預設顯示 7 天
+        } catch (e) {
+            document.getElementById('sbar').className = 'loading';
+            document.getElementById('sbar').style.background = '#fee2e2';
+            document.getElementById('sbar').innerText = "Error: " + e.message;
         }
+    }
 
-        init();
-    </script>
+    function filterBrand(brand, el) {
+        SELECTED_BRAND = brand;
+        document.querySelectorAll('#brand-chips .chip').forEach(c => c.classList.remove('on'));
+        el.classList.add('on');
+        render();
+    }
+
+    function filterByDays(days, el) {
+        if (el) {
+            document.querySelectorAll('[onclick^="filterByDays"]').forEach(c => c.classList.remove('on'));
+            el.classList.add('on');
+        }
+        
+        const cutoff = new Date();
+        cutoff.setDate(cutoff.getDate() - days);
+        const cutoffStr = cutoff.toISOString().split('T')[0];
+
+        FILTERED_DATA = RAW_DATA.filter(d => (d["天數"] || d["日期"]) >= cutoffStr);
+        render();
+    }
+
+    function render() {
+        const data = SELECTED_BRAND === 'all' ? FILTERED_DATA : FILTERED_DATA.filter(d => d["品牌"] === SELECTED_BRAND);
+        
+        // 1. 核心指標加總
+        let spend = 0, rev = 0, clicks = 0, purch = 0, atc = 0, impr = 0;
+        data.forEach(d => {
+            spend += parseFloat(d["花費金額 (TWD)"] || 0);
+            rev += parseFloat(d["購買轉換值"] || 0);
+            clicks += parseFloat(d["連結點擊次數"] || 0);
+            purch += parseFloat(d["購買次數"] || 0);
+            atc += parseFloat(d["加到購物車次數"] || 0);
+            impr += parseFloat(d["曝光次數"] || 0);
+        });
+
+        const roi = spend > 0 ? (rev / spend) : 0;
+        const roas = roi; // 若無特定 Ads Revenue，以轉化值計算
+        const cvr = clicks > 0 ? (purch / clicks * 100) : 0;
+        const ctr = impr > 0 ? (clicks / impr * 100) : 0;
+
+        // 2. 更新 UI
+        document.getElementById('roi-big').innerText = roi.toFixed(2) + '×';
+        document.getElementById('roi-net').innerText = fmtN(rev);
+        document.getElementById('roi-sp').innerText = fmtN(spend);
+        document.getElementById('roas-mini').innerText = roas.toFixed(2) + '×';
+        document.getElementById('cvr-mini').innerText = cvr.toFixed(2) + '%';
+        document.getElementById('ctr-mini').innerText = ctr.toFixed(2) + '%';
+
+        document.getElementById('k-cac').innerText = purch > 0 ? '$' + (spend / purch).toFixed(1) : '—';
+        document.getElementById('k-aov').innerText = purch > 0 ? fmtN(rev / purch) : '—';
+        document.getElementById('k-roas').innerText = roas.toFixed(2) + '×';
+        document.getElementById('k-net').innerText = fmtN(rev);
+        document.getElementById('k-sp').innerText = fmtN(spend);
+        document.getElementById('k-clk').innerText = fmtI(clicks);
+        document.getElementById('k-purch').innerText = fmtI(purch);
+
+        // Funnel
+        document.getElementById('f-clk').innerText = fmtI(clicks);
+        document.getElementById('f-atc').innerText = fmtI(atc);
+        document.getElementById('f-purch').innerText = fmtI(purch);
+        document.getElementById('fb-atc').style.width = clicks > 0 ? (atc / clicks * 100) + '%' : '0%';
+        document.getElementById('fb-purch').style.width = clicks > 0 ? (purch / clicks * 100) + '%' : '0%';
+        document.getElementById('f-atc-rate').innerText = clicks > 0 ? (atc / clicks * 100).toFixed(1) + '%' : '0%';
+        document.getElementById('f-purch-rate').innerText = atc > 0 ? (purch / atc * 100).toFixed(1) + '%' : '0%';
+
+        // 3. 表格更新
+        let tableHtml = "";
+        data.slice(0, 50).forEach(d => {
+            const rowRoi = parseFloat(d["花費金額 (TWD)"]) > 0 ? (parseFloat(d["購買轉換值"]) / parseFloat(d["花費金額 (TWD)"])).toFixed(2) : '0.00';
+            tableHtml += `<tr>
+                <td><span class="tag ${d._DataSource === 'Meta ads' ? 'tm' : 'tg'}">${d._DataSource}</span></td>
+                <td>${d["天數"] || d["日期"]}</td>
+                <td>${d["品牌"]}</td>
+                <td class="num">${fmtN(d["花費金額 (TWD)"])}</td>
+                <td class="num">${fmtN(d["購買轉換值"])}</td>
+                <td class="num">${d["Roas"] || '—'}</td>
+                <td class="num" style="color:var(--accent); font-weight:700">${rowRoi}×</td>
+            </tr>`;
+        });
+        document.getElementById('table-body').innerHTML = tableHtml;
+
+        renderCharts(data);
+    }
+
+    function renderCharts(data) {
+        if (charts.trend) charts.trend.destroy();
+        if (charts.pie) charts.pie.destroy();
+
+        // 趨勢圖處理
+        const daily = {};
+        data.forEach(d => {
+            const date = d["天數"] || d["日期"];
+            if (!daily[date]) daily[date] = { spend: 0, rev: 0 };
+            daily[date].spend += parseFloat(d["花費金額 (TWD)"] || 0);
+            daily[date].rev += parseFloat(d["購買轉換值"] || 0);
+        });
+        const labels = Object.keys(daily).sort();
+
+        charts.trend = new Chart(document.getElementById('trendChart'), {
+            data: {
+                labels,
+                datasets: [
+                    { type: 'bar', label: 'Spend', data: labels.map(l => daily[l].spend), backgroundColor: 'rgba(59, 130, 246, 0.2)', borderRadius: 4 },
+                    { type: 'line', label: 'ROI', data: labels.map(l => daily[l].spend > 0 ? daily[l].rev / daily[l].spend : 0), borderColor: '#0f3a5e', tension: 0.4, yAxisID: 'y1' }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false, scales: { y1: { position: 'right', grid: { display: false } } } }
+        });
+
+        // 渠道佔比
+        const channels = { 'Meta ads': 0, 'Google ads': 0, 'sale': 0 };
+        data.forEach(d => channels[d._DataSource] += parseFloat(d["花費金額 (TWD)"] || 0));
+
+        charts.pie = new Chart(document.getElementById('pieChart'), {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(channels),
+                datasets: [{ data: Object.values(channels), backgroundColor: ['#0f3a5e', '#3b82f6', '#10b981'] }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+    }
+
+    loadData();
+</script>
 </body>
 </html>
