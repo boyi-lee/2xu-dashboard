@@ -1506,9 +1506,21 @@ async function loadData(){
   }catch(e){showStatus('error','Load failed: '+e.message);}
 }
 
-// --- 強制隱藏敏感 UI ---
+// --- 強制隱藏敏感 UI 與無關選項 ---
+
+// 1. 隱藏品牌篩選器（因為只有 2XU，不需要切換）
 if($('cg-brand')) $('cg-brand').style.display = 'none';
-if($('cg-market')) $('cg-market').style.display = 'none';
+
+// 2. 處理市場篩選器：保留，但隱藏 SG 與 MY 按鈕
+const marketChips = document.querySelectorAll('#market-filters .chip');
+marketChips.forEach(chip => {
+  const c = chip.dataset.c;
+  if (c === 'SG' || c === 'MY') {
+    chip.style.display = 'none'; // 把用不到的國家隱藏
+  }
+});
+
+// 3. 隱藏設定按鈕（保護 Sheet ID 與 KPI 不被修改）
 document.querySelectorAll('header .btn').forEach(btn => {
   if(btn.textContent.includes('Data Sources') || btn.textContent.includes('KPI Targets')) {
     btn.style.display = 'none';
@@ -1516,7 +1528,7 @@ document.querySelectorAll('header .btn').forEach(btn => {
 });
 
 // 強制綁定預設值
-F.brand = BRANDS;
+F.brand = BRANDS; 
 F.country = ['all'];
 F.dateFrom = daysAgo(7); 
 F.dateTo = daysAgo(1);
