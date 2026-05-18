@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Emers — Ad & Revenue Dashboard</title>
+<title>Emers — 2XU Partner Report</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"></script>
@@ -142,6 +142,27 @@ main{padding:32px;max-width:1440px;margin:0 auto;animation:fadeIn 0.5s ease-out;
 .sec:first-child{margin-top:0}
 .sec-n{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent);white-space:nowrap}
 .sec-r{flex:1;height:var(--bw);background:var(--rule)}
+
+/* NESTED SUB-GROUPS (PLAN B) */
+.sub-group-wrap {
+  background: var(--paper2); 
+  border: var(--bw) solid var(--rule); 
+  border-radius: var(--r2); 
+  padding: 20px 24px 24px; 
+  margin-bottom: 16px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
+}
+.sub-group-title {
+  font-size: 11px; 
+  font-weight: 700; 
+  color: var(--ink2); 
+  margin-bottom: 16px; 
+  display: flex; 
+  align-items: center; 
+  gap: 6px; 
+  text-transform: uppercase; 
+  letter-spacing: .8px;
+}
 
 /* CARDS */
 .kcard, .card, .roi-hero, .funnel-wrap {
@@ -290,6 +311,7 @@ footer{margin-top:40px;padding:32px;border-top:var(--bw) solid var(--rule);displ
   .f-lbl, .f-val { text-align:left; margin-bottom:8px;}
   .f-arr { transform:rotate(90deg); margin-left:32px; padding:0;}
   .f-bar-track{display:none;}
+  .sub-group-wrap{padding:16px;}
 }
 @media(max-width:480px){
   main, header, .ctrlbar, footer{padding-left:16px;padding-right:16px}
@@ -299,6 +321,99 @@ footer{margin-top:40px;padding:32px;border-top:var(--bw) solid var(--rule);displ
   .roi-mini{align-items:center;} .roi-mini-val{font-size:20px;}
   .grid-3, .grid-4, .grid-6{grid-template-columns:1fr;}
 }
+
+/* ── ACCORDION ── */
+.brand-main-row{cursor:pointer;}
+.brand-expand-row td{padding:0!important;border-bottom:none!important;background:var(--paper);}
+.brand-expand-inner{overflow:hidden;}
+.expand-btn{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:3px;background:var(--paper2);color:var(--ink4);font-size:9px;margin-right:6px;transition:all .15s;flex-shrink:0;vertical-align:middle;}
+.brand-main-row.expanded .expand-btn{background:var(--accent-l);color:var(--accent-m);}
+/* ── QUICK SUMMARY BAR ── */
+.qs-bar{display:flex;gap:24px;padding:14px 24px;background:var(--accent-l);border-bottom:var(--bw) solid var(--rule);flex-wrap:wrap;align-items:center;}
+.qs-item{display:flex;flex-direction:column;gap:2px;}
+.qs-lbl{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--ink4);}
+.qs-val{font-size:16px;font-weight:600;color:var(--accent);font-variant-numeric:tabular-nums;}
+/* ── FUNNEL DROPOUT ── */
+.f-dropout{font-size:10px;color:var(--red);font-weight:700;background:var(--red-bg);padding:3px 9px;border-radius:12px;margin-top:4px;display:inline-block;white-space:nowrap;}
+/* ── THRESHOLD BADGE ── */
+.thresh-ok{display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:2px 6px;border-radius:8px;background:var(--ok-bg);color:var(--ok);margin-left:6px;}
+.thresh-warn{display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:2px 6px;border-radius:8px;background:var(--warn-bg);color:var(--warn);margin-left:6px;}
+.thresh-bad{display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:2px 6px;border-radius:8px;background:var(--red-bg);color:var(--red);margin-left:6px;}
+/* ── BRAND TREND LEGEND DOT ── */
+.leg-circle{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+/* ── L3 新版型 ── */
+.l3-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: repeat(3, auto);
+  gap: 16px;
+  margin-bottom: 16px;
+  align-items: stretch;
+}
+.l3-cvr {
+  grid-column: 1;
+  grid-row: 1 / 4;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.l3-cvr .kv { font-size: 52px; letter-spacing: -2px; }
+.l3-cvr .kl { font-size: 12px; }
+
+/* ── SPEND SPLIT ── */
+.spend-split-bar {
+  width: 100%; height: 8px; border-radius: 4px;
+  overflow: hidden; display: flex; margin: 10px 0 6px;
+}
+.split-seg-meta  { background: var(--accent);   transition: width .8s ease; }
+.split-seg-gads  { background: var(--accent-m); transition: width .8s ease; }
+.split-labels {
+  display: flex; justify-content: space-between;
+  font-size: 11px; font-weight: 600; color: var(--ink2);
+}
+
+/* ── NEW/RETURNING SECTION ── */
+#nr-section { animation: fadeIn .4s ease-out; }
+.nr-warning-bar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 18px; border-radius: var(--r);
+  background: var(--warn-bg); color: var(--warn);
+  border-left: 4px solid var(--warn);
+  font-size: 13px; font-weight: 600; margin-bottom: 16px;
+}
+/* Horizontal bar chart */
+.nr-metric-header {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .8px; color: var(--ink4); margin-bottom: 12px;
+}
+.nr-metric-header .nr-total-val {
+  font-size: 13px; font-weight: 600; color: var(--ink2);
+  font-family: 'DM Mono', monospace;
+}
+.nr-bar-row {
+  display: grid; grid-template-columns: 48px 1fr 46px 100px;
+  align-items: center; gap: 10px; margin-bottom: 10px;
+}
+.nr-bar-label { font-size: 12px; font-weight: 700; color: var(--ink2); }
+.nr-bar-track {
+  height: 10px; background: var(--paper3);
+  border-radius: 5px; overflow: hidden;
+}
+.nr-fill-new { height: 100%; background: var(--accent-m); border-radius: 5px; transition: width .9s cubic-bezier(.4,0,.2,1); }
+.nr-fill-ret { height: 100%; background: var(--accent);   border-radius: 5px; transition: width .9s cubic-bezier(.4,0,.2,1); }
+.nr-bar-pct  { font-size: 13px; font-weight: 700; text-align: right; font-family: 'DM Mono', monospace; }
+.nr-bar-abs  { font-size: 11px; font-weight: 500; color: var(--ink3); text-align: right; font-family: 'DM Mono', monospace; white-space: nowrap; }
+.nr-divider  { border: none; border-top: var(--bw) solid var(--rule); margin: 20px 0; }
+.nr-aov-wrap { display: flex; gap: 40px; align-items: flex-end; }
+.nr-aov-item { display: flex; flex-direction: column; gap: 4px; }
+.nr-aov-lbl  { font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: var(--ink4); }
+.nr-aov-val  { font-size: 32px; font-weight: 300; letter-spacing: -1px; line-height: 1; font-variant-numeric: tabular-nums; }
+.nr-aov-vs   { font-size: 16px; color: var(--ink4); font-weight: 300; padding-bottom: 6px; }
+.nr-aov-diff { margin-left: auto; text-align: right; }
+.nr-aov-diff-lbl { font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: var(--ink4); margin-bottom: 4px; }
+.nr-aov-diff-val { font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+@media(max-width:1180px){ .l3-grid { grid-template-columns: 1fr 1fr; } .l3-cvr { grid-row: 1/1; } }
+@media(max-width:768px){ .l3-grid { grid-template-columns: 1fr; } .l3-cvr { grid-row: auto; } }
 </style>
 </head>
 <body>
@@ -307,7 +422,7 @@ footer{margin-top:40px;padding:32px;border-top:var(--bw) solid var(--rule);displ
   <div class="wm">
     <span class="wm-n">Emers</span>
     <span class="wm-d">/</span>
-    <span class="wm-s">Ad &amp; Revenue Report</span>
+    <span class="wm-s">2XU Partner Report</span>
   </div>
   <div class="hdr-r">
     <div class="sdot"></div>
@@ -353,10 +468,13 @@ footer{margin-top:40px;padding:32px;border-top:var(--bw) solid var(--rule);displ
   <div class="cdiv"></div>
   
   <div class="cg" id="cg-compare">
-    <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink2);cursor:pointer;user-select:none;font-weight:600;margin-top:2px;">
-      <input type="checkbox" id="chk-compare" onchange="setCompare(this.checked)" style="accent-color:var(--accent-m);width:14px;height:14px;">
-      Compare Prev.
-    </label>
+    <span class="cl toggle-label" onclick="toggleDropdown('compare')">Compare <span class="toggle-icon">▼</span></span>
+    <div class="chip-group" id="chips-compare">
+      <button class="chip on" data-cp="off"  onclick="setCompare('off')">Off</button>
+      <button class="chip"    data-cp="prev" onclick="setCompare('prev')">前期</button>
+      <button class="chip"    data-cp="mom"  onclick="setCompare('mom')">上月同期</button>
+      <button class="chip"    data-cp="yoy"  onclick="setCompare('yoy')">去年同期</button>
+    </div>
   </div>
 
   <div class="cdiv"></div>
@@ -404,6 +522,8 @@ footer{margin-top:40px;padding:32px;border-top:var(--bw) solid var(--rule);displ
     <div class="roi-meta">
       <span><span id="roi-net-lbl">Net Revenue</span> <strong id="roi-net">—</strong></span>
       <span>Ad Spend <strong id="roi-sp">—</strong></span>
+      <span>Contribution Margin <strong id="roi-cm">—</strong> <span id="roi-cm-badge"></span></span>
+      <span>Ad Spend / Net Rev <strong id="roi-spend-pct">—</strong> <span id="roi-spend-badge"></span></span>
       <span id="roi-status-text" style="font-weight:700;margin-top:4px"></span>
     </div>
   </div>
@@ -429,78 +549,136 @@ footer{margin-top:40px;padding:32px;border-top:var(--bw) solid var(--rule);displ
 <div id="roi-insight"></div>
 
 <div class="sec"><span class="sec-n">L2: BUSINESS DRIVERS</span><div class="sec-r"></div></div>
-<div class="grid-3">
-  <div class="kcard">
-    <div class="kl" data-tip="Total Spend ÷ Purchases.">CAC (Acquisition Cost)</div>
-    <div class="kv" id="k-cac">—</div>
-    <div class="ks" id="k-cac-s">Total Spend ÷ Purchases</div>
-  </div>
-  <div class="kcard">
-    <div class="kl" data-tip="Net Revenue ÷ Purchases.">AOV (Average Order Value)</div>
-    <div class="kv" id="k-aov">—</div>
-    <div class="ks" id="k-aov-s">Net Revenue ÷ Purchases</div>
-  </div>
-  <div class="kcard">
-    <div class="kl" data-tip="Ad-attributed revenue ÷ Ad spend.">ROAS</div>
-    <div class="kv" id="k-roas">—</div>
-    <div class="ks" id="k-roas-s">Ad revenue ÷ Ad spend</div>
+
+<!-- GROUP 1: TOP-LINE & INVESTMENT -->
+<div class="sub-group-wrap">
+  <div class="sub-group-title"><span style="font-size:14px; margin-right:2px">📈</span> TOP-LINE &amp; INVESTMENT (大盤規模與投資)</div>
+  <div class="grid-4" style="margin-bottom:0">
+    <div class="kcard">
+      <div class="kl" data-tip="Total gross sales before deductions">GROSS SALES (B)</div>
+      <div class="kv" id="k-gross">—</div>
+      <div class="ks" id="k-gross-s">Before deductions</div>
+    </div>
+    <div class="kcard">
+      <div class="kl" id="k-net-lbl" data-tip="Net sales after all discounts and returns">NET REVENUE (E)</div>
+      <div class="kv" style="color:var(--ok)" id="k-net">—</div>
+      <div class="ks" id="k-net-s">After discounts &amp; returns</div>
+      <div id="k-net-prog"></div>
+    </div>
+    <div class="kcard">
+      <div class="kl" data-tip="Total Meta + Google ad spend">TOTAL SPEND</div>
+      <div class="kv" id="k-sp">—</div>
+      <div class="ks" id="k-sp-s">Meta + Google</div>
+    </div>
+    <div class="kcard">
+      <div class="kl" data-tip="Ad Spend ÷ Net Revenue × 100%。廣告花費佔淨銷售額比重">AD SPEND % of NET</div>
+      <div class="kv" id="k-spend-pct">—</div>
+      <div class="ks" id="k-spend-pct-s">Spend ÷ Net Rev</div>
+    </div>
   </div>
 </div>
-<div class="grid-4">
-  <div class="kcard">
-    <div class="kl" id="k-net-lbl" data-tip="Net sales after all discounts and returns">NET REVENUE (E)</div>
-    <div class="kv" style="color:var(--ok)" id="k-net">—</div>
-    <div class="ks" id="k-net-s">After discounts &amp; returns</div>
-    <div id="k-net-prog"></div>
+
+<!-- GROUP 2: UNIT ECONOMICS -->
+<div class="sub-group-wrap">
+  <div class="sub-group-title"><span style="font-size:14px; margin-right:2px">🎯</span> UNIT ECONOMICS (單位經濟效益)</div>
+  <div class="grid-4" style="margin-bottom:0">
+    <div class="kcard">
+      <div class="kl" data-tip="Net Revenue ÷ Purchases.">AOV (Average Order Value)</div>
+      <div class="kv" id="k-aov">—</div>
+      <div class="ks" id="k-aov-s">Net Revenue ÷ Purchases</div>
+    </div>
+    <div class="kcard">
+      <div class="kl" data-tip="Total Spend ÷ Purchases.">CAC (Acquisition Cost)</div>
+      <div class="kv" id="k-cac">—</div>
+      <div class="ks" id="k-cac-s">Total Spend ÷ Purchases</div>
+    </div>
+    <div class="kcard">
+      <div class="kl" data-tip="AOV ÷ CAC。≥ KPI ROI 為健康，代表每次獲客產出超過廣告成本設定目標">AOV / CAC RATIO</div>
+      <div class="kv" id="k-aov-cac">—</div>
+      <div class="ks" id="k-aov-cac-s">AOV ÷ CAC</div>
+    </div>
+    <div class="kcard">
+      <div class="kl" data-tip="Ad-attributed revenue ÷ Ad spend.">ROAS</div>
+      <div class="kv" id="k-roas">—</div>
+      <div class="ks" id="k-roas-s">Ad revenue ÷ Ad spend</div>
+    </div>
   </div>
-  <div class="kcard">
-    <div class="kl" data-tip="Total Meta + Google ad spend">TOTAL SPEND</div>
-    <div class="kv" id="k-sp">—</div>
-    <div class="ks" id="k-sp-s">Meta + Google</div>
-  </div>
-  <div class="kcard">
-    <div class="kl" data-tip="Total gross sales before deductions">GROSS SALES (B)</div>
-    <div class="kv" id="k-gross">—</div>
-    <div class="ks" id="k-gross-s">Before deductions</div>
-  </div>
-  <div class="kcard">
-    <div class="kl" data-tip="Total discounts applied">DISCOUNTS (C)</div>
-    <div class="kv" id="k-disc">—</div>
-    <div class="ks" id="k-disc-s"></div>
+</div>
+
+<!-- GROUP 3: OPERATIONAL LEAKAGE -->
+<div class="sub-group-wrap">
+  <div class="sub-group-title"><span style="font-size:14px; margin-right:2px">📉</span> OPERATIONAL LEAKAGE (營運折損)</div>
+  <div class="grid-4" style="margin-bottom:0">
+    <div class="kcard">
+      <div class="kl" data-tip="Total discounts applied">DISCOUNTS (C)</div>
+      <div class="kv" id="k-disc">—</div>
+      <div class="ks" id="k-disc-s"></div>
+    </div>
+    <div class="kcard">
+      <div class="kl" data-tip="C ÷ B × 100%。折扣佔銷售總額比率">DISC RATE</div>
+      <div class="kv" id="k-disc-rate">—</div>
+      <div class="ks" id="k-disc-rate-s">C ÷ B</div>
+    </div>
+    <div class="kcard">
+      <div class="kl" data-tip="Total returned amount">RETURNS (D)</div>
+      <div class="kv rd" id="k-ret">—</div>
+      <div class="ks" id="k-ret-s"></div>
+    </div>
+    <div class="kcard">
+      <div class="kl" data-tip="D ÷ (B−C) × 100%。退貨佔實際售出金額比率">RETURN RATE</div>
+      <div class="kv rd" id="k-ret-rate">—</div>
+      <div class="ks" id="k-ret-rate-s">D ÷ (B−C)</div>
+    </div>
   </div>
 </div>
 
 <div class="sec"><span class="sec-n">VISUAL FUNNEL</span><div class="sec-r"></div></div>
 <div class="funnel-wrap">
   <div class="funnel-step">
-    <span class="f-lbl">1. CLICKS (點擊)</span>
-    <div class="f-bar-track"><div class="f-bar-fill" id="fb-clk" style="width:100%;background:var(--accent-m)"></div></div>
-    <span class="f-val" id="f-clk">—</span>
+    <span class="f-lbl">0. IMPRESSIONS (曝光)</span>
+    <div class="f-bar-track"><div class="f-bar-fill" id="fb-impr" style="width:100%;background:var(--ink4)"></div></div>
+    <span class="f-val" style="color:var(--ink2)" id="f-impr">—</span>
     <span class="f-pill" style="opacity:0">100%</span>
   </div>
-  <div class="f-arr">➔</div>
+  <div class="f-arr" style="display:flex;flex-direction:column;align-items:center;gap:4px">➔<span id="f-drop-impr-clk" class="f-dropout" style="display:none"></span></div>
+  <div class="funnel-step">
+    <span class="f-lbl">1. CLICKS (點擊)</span>
+    <div class="f-bar-track"><div class="f-bar-fill" id="fb-clk" style="width:0%;background:var(--accent-m)"></div></div>
+    <span class="f-val" id="f-clk">—</span>
+    <span class="f-pill" id="f-clk-ctr">—</span>
+  </div>
+  <div class="f-arr" style="display:flex;flex-direction:column;align-items:center;gap:4px">➔<span id="f-drop-clk-atc" class="f-dropout" style="display:none"></span></div>
   <div class="funnel-step">
     <span class="f-lbl">2. ADD TO CART</span>
     <div class="f-bar-track"><div class="f-bar-fill" id="fb-atc" style="width:0%;background:var(--accent-m)"></div></div>
     <span class="f-val" id="f-atc">—</span>
     <span class="f-pill" id="f-atc-rate">—</span>
   </div>
-  <div class="f-arr">➔</div>
+  <div class="f-arr" style="display:flex;flex-direction:column;align-items:center;gap:4px">➔<span id="f-drop-atc-purch" class="f-dropout" style="display:none"></span></div>
   <div class="funnel-step">
     <span class="f-lbl">3. PURCHASES (購買)</span>
     <div class="f-bar-track"><div class="f-bar-fill" id="fb-purch" style="width:0%;background:var(--ok)"></div></div>
     <span class="f-val" style="color:var(--ok)" id="f-purch">—</span>
     <span class="f-pill" id="f-purch-rate">—</span>
   </div>
+  <div class="f-arr">➔</div>
+  <div class="funnel-step">
+    <span class="f-lbl">4. NET REVENUE</span>
+    <div class="f-bar-track" style="visibility:hidden"></div>
+    <span class="f-val" style="color:var(--accent)" id="f-rev">—</span>
+    <span class="f-pill" id="f-aov-pill">—</span>
+  </div>
 </div>
 
 <div class="sec"><span class="sec-n">L3: DIAGNOSTIC METRICS</span><div class="sec-r"></div></div>
-<div class="grid-6">
-  <div class="kcard">
+<div class="l3-grid">
+  <!-- 左側：大 CVR (span 3 rows) -->
+  <div class="kcard l3-cvr">
     <div class="kl" data-tip="Purchases ÷ Link Clicks × 100%">CVR%</div>
-    <div class="kv" id="k-cvr">—</div>
-    <div class="ks" id="k-cvr-s"></div>
+    <div class="kv" id="k-cvr" style="font-size:52px;letter-spacing:-2px">—</div>
+    <div class="ks" id="k-cvr-s" style="font-size:13px;margin-top:8px">Purchases ÷ Link Clicks</div>
   </div>
+  <!-- 右側 2×3 = 6 格 -->
   <div class="kcard">
     <div class="kl" data-tip="Clicks ÷ Impressions × 100%">CTR%</div>
     <div class="kv" id="k-ctr">—</div>
@@ -512,11 +690,10 @@ footer{margin-top:40px;padding:32px;border-top:var(--bw) solid var(--rule);displ
     <div class="ks" id="k-cpc-s">Spend ÷ Clicks</div>
   </div>
   <div class="kcard">
-    <div class="kl" data-tip="Total returned amount">RETURNS (D)</div>
-    <div class="kv rd" id="k-ret">—</div>
-    <div class="ks" id="k-ret-s"></div>
+    <div class="kl" data-tip="Spend ÷ Add to Cart 次數。加購成本越低，商品吸引力越高">COST PER ATC</div>
+    <div class="kv" id="k-cp-atc">—</div>
+    <div class="ks" id="k-cp-atc-s">Spend ÷ ATC</div>
   </div>
-  <!-- DIAGNOSTIC METRICS -->
   <div class="kcard">
     <div class="kl" data-tip="Spend ÷ Impressions × 1000">CPM</div>
     <div class="kv" id="k-cpm">—</div>
@@ -526,6 +703,86 @@ footer{margin-top:40px;padding:32px;border-top:var(--bw) solid var(--rule);displ
     <div class="kl" data-tip="Add to Cart ÷ Clicks × 100%">ATC%</div>
     <div class="kv" id="k-atc-rate" style="font-size:26px">—</div>
     <div class="ks" id="k-atc-rate-s">Add to Cart Rate</div>
+  </div>
+  <!-- SPEND SPLIT 雙色條 -->
+  <div class="kcard">
+    <div class="kl" data-tip="Meta 花費 vs Google 花費佔比">SPEND SPLIT</div>
+    <div class="kv" id="k-split-ratio" style="font-size:20px;color:var(--ink2)">—</div>
+    <div class="spend-split-bar">
+      <div class="split-seg-meta" id="split-meta-bar" style="width:50%"></div>
+      <div class="split-seg-gads" id="split-gads-bar" style="width:50%"></div>
+    </div>
+    <div class="split-labels">
+      <span style="color:var(--accent)">Meta <strong id="split-meta-pct">—</strong></span>
+      <span style="color:var(--accent-m)">Google <strong id="split-gads-pct">—</strong></span>
+    </div>
+    <div class="ks" id="k-split-abs" style="margin-top:6px">—</div>
+  </div>
+</div>
+
+<!-- ══ NEW/RETURNING CUSTOMER SECTION ══ -->
+<div id="nr-section" style="display:none">
+  <div class="sec"><span class="sec-n">🧑‍🤝‍🧑 CUSTOMER INSIGHTS (新客 vs 回頭客)</span><div class="sec-r"></div></div>
+  <div id="nr-warning" class="nr-warning-bar" style="display:none">
+    ⚠️ <span id="nr-warning-text">銷售資料缺少「新舊客」或「訂單」欄位，請確認 Google Sheet 已更新至新格式。</span>
+  </div>
+  <div class="card" style="padding:28px 32px;margin-bottom:16px">
+    <div class="ct" style="margin-bottom:24px">
+      <span class="ct-n">新客 vs 回頭客</span>
+      <span class="ct-b g" id="nr-period-badge">—</span>
+    </div>
+    <!-- 訂單數 -->
+    <div class="nr-metric-header">
+      <span>訂單數</span>
+      <span class="nr-total-val" id="nr-orders-total">—</span>
+    </div>
+    <div class="nr-bar-row">
+      <span class="nr-bar-label" style="color:var(--accent-m)">新客</span>
+      <div class="nr-bar-track"><div class="nr-fill-new" id="nr-orders-new-bar" style="width:0%"></div></div>
+      <span class="nr-bar-pct" id="nr-orders-new-pct" style="color:var(--accent-m)">—</span>
+      <span class="nr-bar-abs" id="nr-orders-new-abs">—</span>
+    </div>
+    <div class="nr-bar-row" style="margin-bottom:0">
+      <span class="nr-bar-label">回頭客</span>
+      <div class="nr-bar-track"><div class="nr-fill-ret" id="nr-orders-ret-bar" style="width:0%"></div></div>
+      <span class="nr-bar-pct" id="nr-orders-ret-pct" style="color:var(--accent)">—</span>
+      <span class="nr-bar-abs" id="nr-orders-ret-abs">—</span>
+    </div>
+    <hr class="nr-divider">
+    <!-- 淨營業額 -->
+    <div class="nr-metric-header">
+      <span>淨營業額</span>
+      <span class="nr-total-val" id="nr-rev-total">—</span>
+    </div>
+    <div class="nr-bar-row">
+      <span class="nr-bar-label" style="color:var(--accent-m)">新客</span>
+      <div class="nr-bar-track"><div class="nr-fill-new" id="nr-rev-new-bar" style="width:0%"></div></div>
+      <span class="nr-bar-pct" id="nr-rev-new-pct" style="color:var(--accent-m)">—</span>
+      <span class="nr-bar-abs" id="nr-rev-new-abs">—</span>
+    </div>
+    <div class="nr-bar-row" style="margin-bottom:0">
+      <span class="nr-bar-label">回頭客</span>
+      <div class="nr-bar-track"><div class="nr-fill-ret" id="nr-rev-ret-bar" style="width:0%"></div></div>
+      <span class="nr-bar-pct" id="nr-rev-ret-pct" style="color:var(--accent)">—</span>
+      <span class="nr-bar-abs" id="nr-rev-ret-abs">—</span>
+    </div>
+    <hr class="nr-divider">
+    <!-- AOV 對比 -->
+    <div class="nr-aov-wrap">
+      <div class="nr-aov-item">
+        <div class="nr-aov-lbl" data-tip="新客淨銷售額 ÷ 新客有效訂單（排除訂單=0）">新客 AOV</div>
+        <div class="nr-aov-val" id="nr-new-aov" style="color:var(--accent-m)">—</div>
+      </div>
+      <div class="nr-aov-vs">vs</div>
+      <div class="nr-aov-item">
+        <div class="nr-aov-lbl" data-tip="回頭客淨銷售額 ÷ 回頭客有效訂單（排除訂單=0）">回頭客 AOV</div>
+        <div class="nr-aov-val" id="nr-ret-aov" style="color:var(--accent)">—</div>
+      </div>
+      <div class="nr-aov-diff">
+        <div class="nr-aov-diff-lbl">差距</div>
+        <div class="nr-aov-diff-val" id="nr-aov-diff">—</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -545,6 +802,16 @@ footer{margin-top:40px;padding:32px;border-top:var(--bw) solid var(--rule);displ
   </div>
   <div class="legr" id="trend-legend-box"></div>
   <div class="cw" style="height:320px"><canvas id="mainTrendC" role="img"></canvas></div>
+</div>
+
+<!-- BRAND TREND -->
+<div class="card" style="margin-bottom: 16px;">
+  <div class="ct">
+    <span class="ct-n">BRAND REVENUE TRENDS</span>
+    <span class="ct-b g" id="brand-trend-badge">7 days</span>
+  </div>
+  <div class="legr" id="brand-trend-legend"></div>
+  <div class="cw" style="height:300px"><canvas id="brandTrendC"></canvas></div>
 </div>
 
 <!-- PERFORMANCE BY BRAND -->
@@ -567,25 +834,40 @@ footer{margin-top:40px;padding:32px;border-top:var(--bw) solid var(--rule);displ
   <div class="card">
     <div class="ct">
       <span class="ct-n">NET REVENUE BY BRAND</span>
-      <span class="ct-b n" id="rev-period-badge">dynamic</span>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="dim-toggle" style="margin-bottom:0">
+          <button class="dim-btn on" id="btn-stack-abs" onclick="setStackMode('abs')">Absolute</button>
+          <button class="dim-btn" id="btn-stack-pct" onclick="setStackMode('pct')">Share %</button>
+        </div>
+        <span class="ct-b n" id="rev-period-badge">dynamic</span>
+      </div>
     </div>
     <div class="cw" style="height:220px"><canvas id="stackC"></canvas></div>
   </div>
   <div class="card">
     <div class="ct">
       <span class="ct-n">AD SPEND BY CHANNEL</span>
-      <span class="ct-b n" id="spend-period-badge">dynamic</span>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="dim-toggle" style="margin-bottom:0">
+          <button class="dim-btn on" id="btn-spend-roas" onclick="setSpendOverlay('roas')">ROAS</button>
+          <button class="dim-btn" id="btn-spend-cpc" onclick="setSpendOverlay('cpc')">CPC</button>
+        </div>
+        <span class="ct-b n" id="spend-period-badge">dynamic</span>
+      </div>
     </div>
-    <div class="legr">
+    <div class="legr" id="spend-legend">
       <div class="leg"><div class="leg-sq" style="background-color:#0f3a5e"></div>Meta</div>
-      <div class="leg"><div class="leg-sq" style="background-color:#3b82f6"></div>Google</div>
+      <div class="leg"><div class="leg-sq" style="background-color:#2272b3"></div>Google Search</div>
+      <div class="leg"><div class="leg-sq" style="background-color:#3b82f6"></div>Google PMax</div>
     </div>
     <div class="cw" style="height:220px"><canvas id="spendC"></canvas></div>
   </div>
   <div class="card">
     <div class="ct">
       <span class="ct-n">ROI HEATMAP</span>
-      <span class="ct-b n">brand × period</span>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="ct-b n" id="heat-view-badge">brand × period</span>
+      </div>
     </div>
     <div id="heat-table" style="overflow-x:auto;max-height:240px;-webkit-overflow-scrolling:touch;"></div>
     <div class="sum-row" id="heat-sum"></div>
@@ -605,6 +887,7 @@ footer{margin-top:40px;padding:32px;border-top:var(--bw) solid var(--rule);displ
     </div>
     <div class="sum-row" id="tbl-sum" style="margin-top:0;margin-bottom:16px;padding-top:0;border-top:none;border-bottom:var(--bw) solid var(--rule);padding-bottom:16px"></div>
   </div>
+  <div id="tbl-quick-summary" class="qs-bar" style="display:none"></div>
   <div class="tbl-wrap">
     <table id="main-table">
       <thead id="tbl-head"></thead>
@@ -700,29 +983,27 @@ Chart.defaults.plugins.tooltip.padding = 10;
 Chart.defaults.plugins.tooltip.cornerRadius = 6;
 Chart.defaults.plugins.tooltip.displayColors = true;
 
-// 代理商專屬版本：強制鎖定僅支援 2XU
-const BRANDS = ['2XU HK', '2XU TW'];
-
+const BRANDS=['2XU HK','2XU TW']; // 代理商版：僅限 2XU
 const KNOWN_COUNTRIES = ['TW', 'HK', 'SG', 'MY'];
 // STRICT BLUE COLOR CONSTRAINT (Only Corporate Navy #0f3a5e and Vivid Blue #3b82f6)
 const BCOLORS=['#0f3a5e','#0f3a5e','#0f3a5e','#0f3a5e','#0f3a5e','#0f3a5e','#0f3a5e','#0f3a5e'];
 
 let CONFIG = {
-  metaId: localStorage.getItem('emers_meta_id') || '16XYjr0e7MwAyCdJ-pXb-IxzUtU7hw0BCmAcNd0v1CPE',
-  gadsId: localStorage.getItem('emers_gads_id') || '16XYjr0e7MwAyCdJ-pXb-IxzUtU7hw0BCmAcNd0v1CPE',
-  salesId: localStorage.getItem('emers_sales_id') || '16XYjr0e7MwAyCdJ-pXb-IxzUtU7hw0BCmAcNd0v1CPE'
+  metaId: localStorage.getItem('emers_2xu_meta_id') || '16XYjr0e7MwAyCdJ-pXb-IxzUtU7hw0BCmAcNd0v1CPE',
+  gadsId: localStorage.getItem('emers_2xu_gads_id') || '16XYjr0e7MwAyCdJ-pXb-IxzUtU7hw0BCmAcNd0v1CPE',
+  salesId: localStorage.getItem('emers_2xu_sales_id') || '16XYjr0e7MwAyCdJ-pXb-IxzUtU7hw0BCmAcNd0v1CPE'
 };
 
 const DEFAULT_KPI = {};
 BRANDS.forEach(b => DEFAULT_KPI[b] = { rev: 1000000, roi: 5 });
 
-let KPI_DATA = JSON.parse(localStorage.getItem('emers_kpis_v2'));
+let KPI_DATA = JSON.parse(localStorage.getItem('emers_2xu_kpis_v2'));
 if (!KPI_DATA) {
     KPI_DATA = {};
     const d = new Date();
     const currM = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
     KPI_DATA[currM] = DEFAULT_KPI;
-    localStorage.setItem('emers_kpis_v2', JSON.stringify(KPI_DATA));
+    localStorage.setItem('emers_2xu_kpis_v2', JSON.stringify(KPI_DATA));
 }
 
 function getMonthKpi(monthStr) { return KPI_DATA[monthStr] || DEFAULT_KPI; }
@@ -731,11 +1012,16 @@ let RAW={meta:[],gads:[],sales:[]};
 let brandToCountries={};
 let countryToBrands={};
 
-let F={brand:['all'],country:['all'],media:'all',dateFrom:'',dateTo:'',comparePrev:false};
+let F={brand:['all'],country:['all'],media:'all',dateFrom:'',dateTo:'',compareMode:'off'};
 let charts={},timer=null,sortKey='roi',sortDir=-1,dimMode='brand';
 
 window.brandMetric = 'roi'; 
 window.trendMode = 'rev'; // Simplified modes: 'rev', 'roi'
+
+// --- 圖表顯示狀態全域變數 ---
+window.stackMode = 'abs';      // 預設為 Absolute
+window.spendOverlay = 'roas';  // 預設為 ROAS
+window.heatView = 'brand';     // 預設為 Brand × Period
 
 const $=id=>document.getElementById(id);
 const getLocalD=(d)=>{const x=new Date(d); x.setMinutes(x.getMinutes()-x.getTimezoneOffset()); return x.toISOString().slice(0,10);};
@@ -789,27 +1075,18 @@ function toggleMedia(m) {
 }
 
 function toggleB(b) {
-  if (b === 'all') { F.brand = ['all']; F.country = ['all']; } 
+  if (b === 'all') { F.brand = ['all']; } 
   else {
     if (F.brand.includes('all')) F.brand = [];
     if (F.brand.includes(b)) F.brand = F.brand.filter(x => x !== b);
     else F.brand.push(b);
-    if (F.brand.length === 0) { F.brand = ['all']; F.country = ['all']; } 
-    else {
-      let validC = new Set();
-      F.brand.forEach(brand => { (brandToCountries[brand] || []).forEach(c => validC.add(c)); });
-      if (F.country.includes('all')) { F.country = Array.from(validC); } 
-      else {
-        F.country = F.country.filter(c => validC.has(c));
-        if (F.country.length === 0) F.country = Array.from(validC);
-      }
-    }
+    if (F.brand.length === 0) F.brand = ['all'];
   }
   updateChips(); if(RAW.meta.length) render();
 }
 
 function toggleC(c) {
-  if (c === 'all') { F.country = ['all']; F.brand = ['all']; } 
+  if (c === 'all') { F.country = ['all']; } 
   else {
     if (F.country.includes('all')) F.country = [];
     const isMySg = c === 'MY' || c === 'SG';
@@ -821,16 +1098,7 @@ function toggleC(c) {
       if (F.country.includes(c)) F.country = F.country.filter(x => x !== c);
       else F.country.push(c);
     }
-    if (F.country.length === 0) { F.country = ['all']; F.brand = ['all']; } 
-    else {
-      let validB = new Set();
-      F.country.forEach(country => { (countryToBrands[country] || []).forEach(b => validB.add(b)); });
-      if (F.brand.includes('all')) { F.brand = Array.from(validB); } 
-      else {
-        F.brand = F.brand.filter(b => validB.has(b));
-        if (F.brand.length === 0) F.brand = Array.from(validB);
-      }
-    }
+    if (F.country.length === 0) F.country = ['all'];
   }
   updateChips(); if(RAW.meta.length) render();
 }
@@ -855,7 +1123,11 @@ function applyCustom(){
   if(F.dateFrom&&F.dateTo&&(RAW.meta.length||RAW.sales.length))render();
 }
 function setDim(d,el){dimMode=d;document.querySelectorAll('.dim-btn').forEach(x=>x.classList.remove('on'));el.classList.add('on');render();}
-function setCompare(val){F.comparePrev=val;if(RAW.meta.length)render();}
+function setCompare(mode){
+  F.compareMode=mode;
+  document.querySelectorAll('[data-cp]').forEach(el=>el.classList.toggle('on',el.dataset.cp===mode));
+  if(RAW.meta.length)render();
+}
 function setBrandMetric(m){
   window.brandMetric = m;
   $('btn-met-roi').classList.remove('on');
@@ -870,6 +1142,23 @@ function setTrendMode(m){
   $('btn-trend-roi').classList.remove('on');
   $('btn-trend-'+m).classList.add('on');
   if(RAW.meta.length)render();
+}
+
+// --- 按鈕切換函數 ---
+function setStackMode(mode) {
+    window.stackMode = mode;
+    $('btn-stack-abs').classList.remove('on');
+    $('btn-stack-pct').classList.remove('on');
+    $('btn-stack-' + mode).classList.add('on');
+    if (RAW.meta.length || RAW.sales.length) render();
+}
+
+function setSpendOverlay(overlay) {
+    window.spendOverlay = overlay;
+    $('btn-spend-roas').classList.remove('on');
+    $('btn-spend-cpc').classList.remove('on');
+    $('btn-spend-' + overlay).classList.add('on');
+    if (RAW.meta.length || RAW.sales.length) render();
 }
 
 /* Data Parsing */
@@ -908,6 +1197,7 @@ function parseMeta(rows){
   return rows.filter(r=>/meta/i.test(r[K.media]||'')).map(r=>{
     const date=normDate(r[K.date]), brand=(r[K.brand]||'').trim();
     let rawC = normalizeCountry((r[K.country]||'').trim()) || inferCountryByBrand(brand);
+    if (!KNOWN_COUNTRIES.includes(rawC) && !rawC.includes('+')) rawC = inferCountryByBrand(brand) || rawC;
     const spend=parseFloat(String(r[K.spend]||'0').replace(/,/g,''))||0;
     const clicks=parseFloat(String(r[K.clicks]||'0').replace(/,/g,''))||0;
     const impr=parseFloat(String(r[K.impr]||'0').replace(/,/g,''))||0;
@@ -923,18 +1213,23 @@ function parseGads(rows){
   const R=rows[0],K={media:kf(R,'媒體','media'),brand:kf(R,'^品牌$','brand'),country:kf(R,'國家','country'),
     date:kf(R,'^日期$','^date$'),spend:kf(R,'費用','cost','spend'),rev:kf(R,'購買價值','purchase.value','revenue'),
     clicks:kf(R,'^點擊$','^clicks$'),purch:kf(R,'^購買$','^purchases$'),
-    ctr:kf(R,'點閱率','ctr'),impr:kf(R,'^曝光$','impressions')};
+    ctr:kf(R,'點閱率','ctr'),impr:kf(R,'^曝光$','impressions'),
+    campaignType:kf(R,'廣告活動類型','campaign.type','campaigntype')};
   return rows.filter(r=>/google/i.test(r[K.media]||'')).map(r=>{
     const date=normDate(r[K.date]), brand=(r[K.brand]||'').trim();
     let rawC = normalizeCountry((r[K.country]||'').trim()) || inferCountryByBrand(brand);
+    if (!KNOWN_COUNTRIES.includes(rawC) && !rawC.includes('+')) rawC = inferCountryByBrand(brand) || rawC;
     const spend=parseFloat(String(r[K.spend]||'0').replace(/,/g,''))||0;
     const clicks=parseFloat(String(r[K.clicks]||'0').replace(/,/g,''))||0;
     const impr=parseFloat(String(r[K.impr]||'0').replace(/,/g,''))||0;
     const ctr=impr>0?(clicks/impr*100):((parseFloat(String(r[K.ctr]||'0').replace(/,/g,''))||0)*100);
+    const campaignType=(r[K.campaignType]||'').trim();
     return{brand,country:rawC,countries:rawC.includes('+')?rawC.split('+'):[rawC],
       date,month:date?date.slice(0,7):null,spend,rev:parseFloat(String(r[K.rev]||'0').replace(/,/g,''))||0,
       clicks,purchases:parseFloat(String(r[K.purch]||'0').replace(/,/g,''))||0,
-      cpc:clicks>0?spend/clicks:0,ctr,impr};
+      cpc:clicks>0?spend/clicks:0,ctr,impr,campaignType,
+      isSearch:/搜尋|search/i.test(campaignType),
+      isPMax:/最高成效|performance.max|pmax/i.test(campaignType)};
   }).filter(r=>r.date&&r.brand);
 }
 
@@ -943,16 +1238,26 @@ function parseSales(rows){
   const R=rows[0],K={brand:kf(R,'^品牌$','brand'),date:kf(R,'日期','A \\(日期\\)','date'),
     gross:kf(R,'B \\(銷售總額\\)','銷售總額','gross'),disc:kf(R,'C \\(折扣\\)','折扣','discount'),
     ret:kf(R,'D \\(退貨金額\\)','退貨','return'),net:kf(R,'E \\(銷貨淨額\\)','銷貨淨額','net'),
-    country:kf(R,'國家','country')};
+    country:kf(R,'國家','country'),
+    orders:kf(R,'訂單','^orders$'),
+    custType:kf(R,'新舊客','customer.type','new.returning')};
+  // 防呆：偵測新欄位是否存在
+  const allKeys=Object.keys(R);
+  RAW._hasOrders = allKeys.some(k=>/訂單/.test(k)||/^orders$/i.test(k));
+  RAW._hasCustType = allKeys.some(k=>/新舊客/.test(k));
   return rows.map(r=>{
     const date=normDate(r[K.date]), brand = (r[K.brand]||'').trim();
     let rawC = normalizeCountry((r[K.country]||'').trim()) || inferCountryByBrand(brand);
+    if (!KNOWN_COUNTRIES.includes(rawC) && !rawC.includes('+')) rawC = inferCountryByBrand(brand) || rawC;
+    const ordersRaw = parseFloat(String(r[K.orders]||'0').replace(/,/g,''));
     return{brand, country:rawC, countries: rawC.includes('+') ? rawC.split('+') : [rawC],
       date,month:date?date.slice(0,7):null,
       gross:parseFloat(String(r[K.gross]||'0').replace(/,/g,''))||0,
       disc:parseFloat(String(r[K.disc]||'0').replace(/,/g,''))||0,
       ret:parseFloat(String(r[K.ret]||'0').replace(/,/g,''))||0,
-      net:parseFloat(String(r[K.net]||'0').replace(/,/g,''))||0};
+      net:parseFloat(String(r[K.net]||'0').replace(/,/g,''))||0,
+      orders:isNaN(ordersRaw)?0:ordersRaw,
+      custType:(r[K.custType]||'').trim()};
   }).filter(r=>r.date&&r.brand);
 }
 
@@ -1055,7 +1360,7 @@ function aggData(dFrom, dTo){
   const processTS = (arr, isSales, isMeta) => {
     arr.forEach(r=>{
       const bk=getBucketKey(r.date);
-      if(!tsBuckets[bk]) tsBuckets[bk]={spend:0,net:0,ms:0,gs:0,mr:0,gr:0};
+      if(!tsBuckets[bk]) tsBuckets[bk]={spend:0,net:0,ms:0,gs:0,mr:0,gr:0,searchS:0,pmaxS:0,mClk:0,gClk:0};
       if(!bBuckets[r.brand][bk]) bBuckets[r.brand][bk]={spend:0,net:0,ms:0,gs:0,mr:0,gr:0};
       if(isSales){ tsBuckets[bk].net+=r.net; bBuckets[r.brand][bk].net+=r.net; } 
       else {
@@ -1063,9 +1368,13 @@ function aggData(dFrom, dTo){
         if(isMeta){
           tsBuckets[bk].ms+=amt;bBuckets[r.brand][bk].ms+=amt;
           tsBuckets[bk].mr+=r.rev;bBuckets[r.brand][bk].mr+=r.rev;
+          tsBuckets[bk].mClk+=(r.clicks||0);
         } else {
           tsBuckets[bk].gs+=amt;bBuckets[r.brand][bk].gs+=amt;
           tsBuckets[bk].gr+=r.rev;bBuckets[r.brand][bk].gr+=r.rev;
+          tsBuckets[bk].gClk+=(r.clicks||0);
+          if(r.isSearch) tsBuckets[bk].searchS+=amt;
+          if(r.isPMax) tsBuckets[bk].pmaxS+=amt;
         }
       }
     });
@@ -1075,10 +1384,17 @@ function aggData(dFrom, dTo){
   const tsKeys=Object.keys(tsBuckets).sort();
   const tsSeries=tsKeys.map(k=>{
     let bNet = F.media === 'all' ? tsBuckets[k].net : (F.media === 'meta' ? tsBuckets[k].mr : tsBuckets[k].gr);
+    const bk=tsBuckets[k];
     return {
       label: dayCount<=31 ? k.slice(5).replace('-','/') : k.slice(5).replace('-','/') + '週',
-      spend: tsBuckets[k].spend, net: bNet,
-      ms: tsBuckets[k].ms, gs: tsBuckets[k].gs, roi: tsBuckets[k].spend>0 ? bNet/tsBuckets[k].spend : 0
+      spend: bk.spend, net: bNet,
+      ms: bk.ms, gs: bk.gs,
+      searchS: bk.searchS||0, pmaxS: bk.pmaxS||0,
+      roi: bk.spend>0 ? bNet/bk.spend : 0,
+      metaRoas: bk.ms>0 ? bk.mr/bk.ms : null,
+      gadsRoas: bk.gs>0 ? bk.gr/bk.gs : null,
+      metaCpc: bk.mClk>0 ? bk.ms/bk.mClk : null,
+      gadsCpc: bk.gClk>0 ? bk.gs/bk.gClk : null
     };
   });
   
@@ -1089,17 +1405,63 @@ function aggData(dFrom, dTo){
       let v = F.media === 'all' ? bBuckets[bn][k].net : (F.media === 'meta' ? bBuckets[bn][k].mr : bBuckets[bn][k].gr);
       return Math.round(v);
     });
-    heat.push({brand:bn, vals:tsKeys.map(k=> { 
-      const b=bBuckets[bn][k]; 
-      if(b&&b.spend>0){
-        let v = F.media === 'all' ? b.net : (F.media === 'meta' ? b.mr : b.gr);
-        return v/b.spend;
-      }
-      return null;
-    }) });
+    heat.push({brand:bn,
+      vals:tsKeys.map(k=>{ const b=bBuckets[bn][k]; if(b&&b.spend>0){let v=F.media==='all'?b.net:(F.media==='meta'?b.mr:b.gr);return v/b.spend;}return null;}),
+      spends:tsKeys.map(k=>bBuckets[bn][k]?bBuckets[bn][k].spend:0)
+    });
   });
+  // BES: Revenue Share × ROI (scale efficiency score)
+  const _totNet=brandRows.reduce((s,b)=>s+Math.max(0,b.net||0),0);
+  brandRows.forEach(b=>{b.revShare=_totNet>0?Math.max(0,b.net||0)/_totNet*100:0;b.bes=b.roi>0&&b.revShare>0?b.revShare/100*b.roi:0;});
+  // Country × Brand matrix
+  const countryBrandMatrix=KNOWN_COUNTRIES.map(country=>({
+    country,
+    vals:targetBrands.map(brand=>{
+      const bm2=meta.filter(r=>r.brand===brand&&r.country===country);
+      const bg2=gads.filter(r=>r.brand===brand&&(r.countries||[r.country]).includes(country));
+      const bs2=sales.filter(r=>r.brand===brand&&(r.countries||[r.country]).includes(country));
+      const bsp2=bm2.reduce((s,r)=>s+r.spend,0)+bg2.reduce((s,r)=>s+r.spend,0);
+      const bn2=F.media==='all'?bs2.reduce((s,r)=>s+r.net,0):(F.media==='meta'?bm2.reduce((s,r)=>s+r.rev,0):bg2.reduce((s,r)=>s+r.rev,0));
+      const uSp=F.media==='meta'?bm2.reduce((s,r)=>s+r.spend,0):(F.media==='google'?bg2.reduce((s,r)=>s+r.spend,0):bsp2);
+      return uSp>0?{roi:bn2/uSp,spend:uSp}:null;
+    })
+  }));
+
+  // ── 新舊客聚合（僅 media=all 時有意義）──
+  let nrData = null;
+  if (F.media === 'all') {
+    const newRows = sales.filter(r => r.custType === 'New');
+    const retRows = sales.filter(r => r.custType === 'Returning');
+    // 訂單為 0 的列：淨額仍計入總額，但排除於 AOV 分母
+    const newOrders = newRows.filter(r=>r.orders>0).reduce((s,r)=>s+r.orders,0);
+    const retOrders = retRows.filter(r=>r.orders>0).reduce((s,r)=>s+r.orders,0);
+    const newNet = newRows.reduce((s,r)=>s+r.net,0);
+    const retNet = retRows.reduce((s,r)=>s+r.net,0);
+    const newNetForAOV = newRows.filter(r=>r.orders>0).reduce((s,r)=>s+r.net,0);
+    const retNetForAOV = retRows.filter(r=>r.orders>0).reduce((s,r)=>s+r.net,0);
+    const brandNR = targetBrands.map(bn=>{
+      const bnew=sales.filter(r=>r.brand===bn&&r.custType==='New');
+      const bret=sales.filter(r=>r.brand===bn&&r.custType==='Returning');
+      const bno=bnew.filter(r=>r.orders>0).reduce((s,r)=>s+r.orders,0);
+      const bro=bret.filter(r=>r.orders>0).reduce((s,r)=>s+r.orders,0);
+      const bnn=bnew.reduce((s,r)=>s+r.net,0);
+      const brn=bret.reduce((s,r)=>s+r.net,0);
+      const bnnAOV=bnew.filter(r=>r.orders>0).reduce((s,r)=>s+r.net,0);
+      const brnAOV=bret.filter(r=>r.orders>0).reduce((s,r)=>s+r.net,0);
+      return{brand:bn,newOrders:bno,retOrders:bro,newNet:bnn,retNet:brn,
+        newAOV:bno>0?bnnAOV/bno:null, retAOV:bro>0?brnAOV/bro:null};
+    }).filter(b=>b.newOrders>0||b.retOrders>0||b.newNet!==0||b.retNet!==0);
+    nrData={
+      newOrders, retOrders, newNet, retNet,
+      newAOV: newOrders>0?newNetForAOV/newOrders:null,
+      retAOV: retOrders>0?retNetForAOV/retOrders:null,
+      hasData: !!(RAW._hasCustType && RAW._hasOrders),
+      brandNR
+    };
+  }
+
   return{sp,ms,gs,roi,roas,gross,disc,ret,net,clicks,purch,cpc,ctr,cvr,impr,atc,cac,aov,
-    brandRows,dayRows,tsSeries,tsKeys,bStack,heat,dayCount,targetBrands};
+    brandRows,dayRows,tsSeries,tsKeys,bStack,heat,dayCount,targetBrands,countryBrandMatrix,nrData};
 }
 
 function periodLabel(){
@@ -1113,7 +1475,7 @@ function renderVal(id, currV, prevV, fmtFn, colorMode=1){
   const el=$(id); if(!el)return;
   if (currV === null) { el.innerHTML = '—'; return; }
   let html = fmtFn(currV);
-  if (F.comparePrev && prevV!==null && prevV!==undefined) {
+  if (F.compareMode !== 'off' && prevV!==null && prevV!==undefined) {
       const diff = currV - prevV;
       if (Math.abs(diff) >= 0.0001) {
           const sign = diff > 0 ? '↑' : '↓';
@@ -1127,11 +1489,24 @@ function renderVal(id, currV, prevV, fmtFn, colorMode=1){
 /* RENDER */
 function render(){
   const d = aggData(F.dateFrom, F.dateTo);
+  // Always compute prev period for brand arrows + table status
+  const _pPer=(()=>{const d1=new Date(F.dateFrom),d2=new Date(F.dateTo);const pTo=new Date(d1.getTime()-86400000);const pFrom=new Date(pTo.getTime()-(d2.getTime()-d1.getTime()));return{from:pFrom.toISOString().slice(0,10),to:pTo.toISOString().slice(0,10)};})();
+  const dPrev=(RAW.meta.length||RAW.sales.length)?aggData(_pPer.from,_pPer.to):null;
+  const compareLabel = F.compareMode==='mom' ? 'MoM 同期' : F.compareMode==='yoy' ? 'YoY 同期' : (()=>{const t=document.querySelector('[data-t].on')?.dataset.t||'7';return t==='1'?'DoD':t==='7'?'WoW':t==='30'||t==='thisMonth'?'MoM':t==='90'?'QoQ':'vs prev';})();
   let p = null;
-  if(F.comparePrev){
+  if (F.compareMode !== 'off') {
     const d1=new Date(F.dateFrom), d2=new Date(F.dateTo);
-    const pToD=new Date(d1.getTime()-86400000);
-    const pFromD=new Date(pToD.getTime()-(d2.getTime()-d1.getTime()));
+    let pFromD, pToD;
+    if (F.compareMode === 'prev') {
+      pToD = new Date(d1.getTime()-86400000);
+      pFromD = new Date(pToD.getTime()-(d2.getTime()-d1.getTime()));
+    } else if (F.compareMode === 'mom') {
+      pFromD = new Date(d1); pFromD.setMonth(pFromD.getMonth()-1);
+      pToD   = new Date(d2); pToD.setMonth(pToD.getMonth()-1);
+    } else if (F.compareMode === 'yoy') {
+      pFromD = new Date(d1); pFromD.setFullYear(pFromD.getFullYear()-1);
+      pToD   = new Date(d2); pToD.setFullYear(pToD.getFullYear()-1);
+    }
     p = aggData(pFromD.toISOString().slice(0,10), pToD.toISOString().slice(0,10));
   }
   
@@ -1183,11 +1558,34 @@ function render(){
   renderVal('roi-sp', d.sp, p?.sp, fmtN, 0);
   renderVal('roas-mini', d.roas, p?.roas, fmtR, 1);
   renderVal('cvr-mini', d.cvr, p?.cvr, fmtP, 1);
-  const currRetP = d.gross>0 && d.gross!==null ? Math.abs((d.ret/d.gross)*100) : (d.gross===null ? null : 0);
-  renderVal('ret-mini', currRetP, (p&&p.gross>0)?Math.abs((p.ret/p.gross)*100):null, fmtP, -1);
+  const currRetP = (d.gross!==null && d.disc!==null && (d.gross-Math.abs(d.disc||0))>0) ? Math.abs((d.ret||0)/(d.gross-Math.abs(d.disc||0))*100) : (d.gross===null?null:0);
+  renderVal('ret-mini', currRetP, (p&&p.gross!==null&&p.disc!==null&&(p.gross-Math.abs(p.disc||0))>0)?Math.abs((p.ret||0)/(p.gross-Math.abs(p.disc||0))*100):null, fmtP, -1);
   const currDiscP = d.gross>0 && d.gross!==null ? Math.abs((d.disc/d.gross)*100) : (d.gross===null ? null : 0);
   renderVal('disc-mini', currDiscP, (p&&p.gross>0)?Math.abs((p.disc/p.gross)*100):null, fmtP, -1);
-  
+  // Threshold badges
+  if($('ret-thresh-badge')){
+    const rb=currRetP===null?'':currRetP<=5?'<span class="thresh-ok">✓</span>':currRetP<=10?'<span class="thresh-warn">⚠ 偏高</span>':'<span class="thresh-bad">⚠ 危險</span>';
+    $('ret-thresh-badge').innerHTML=rb;
+  }
+  if($('disc-thresh-badge')){
+    const db=currDiscP===null?'':currDiscP<=10?'<span class="thresh-ok">✓</span>':currDiscP<=20?'<span class="thresh-warn">⚠</span>':'<span class="thresh-bad">⚠ 危險</span>';
+    $('disc-thresh-badge').innerHTML=db;
+  }
+  // L1 Contribution Margin + Spend%
+  const cm=d.net!==null&&d.sp>0?d.net-d.sp:null;
+  const spendPctNet=d.net>0&&d.sp>0?d.sp/d.net*100:null;
+  if($('roi-cm')){
+    if(cm!==null){$('roi-cm').textContent=fmtN(cm);$('roi-cm').style.color=cm>=0?'var(--ok)':'var(--red)';
+      const pct=d.net>0?(cm/d.net*100).toFixed(1):0;
+      if($('roi-cm-badge'))$('roi-cm-badge').innerHTML=`<span style="font-size:11px;color:${cm>=0?'var(--ok)':'var(--red)'}">(${pct}%)</span>`;
+    } else $('roi-cm').textContent='—';
+  }
+  if($('roi-spend-pct')&&spendPctNet!==null){
+    $('roi-spend-pct').textContent=spendPctNet.toFixed(1)+'%';
+    $('roi-spend-pct').style.color=spendPctNet<=20?'var(--ok)':spendPctNet<=35?'var(--warn)':'var(--red)';
+    if($('roi-spend-badge'))$('roi-spend-badge').innerHTML=spendPctNet<=20?'<span class="thresh-ok">✓ 健康</span>':spendPctNet<=35?'<span class="thresh-warn">⚠ 偏高</span>':'<span class="thresh-bad">⚠ 危險</span>';
+  }
+
   /* L2/L3 METRICS */
   renderVal('k-net', d.net, p?.net, fmtN, 1);
   renderVal('k-gross', d.gross, p?.gross, fmtN, 1);
@@ -1201,19 +1599,77 @@ function render(){
   renderVal('k-ctr', d.ctr, p?.ctr, fmtP, 1);
   renderVal('k-cpc', d.cpc, p?.cpc, v=>'$'+v.toFixed(1), -1);
   renderVal('k-cpm', d.impr > 0 ? (d.sp / d.impr) * 1000 : null, p && p.impr > 0 ? (p.sp / p.impr) * 1000 : null, v=>'$'+v.toFixed(2), -1);
-  if (F.media === 'google') { $('k-atc-rate').innerHTML = '—'; } else {
+
+  // 進階指標渲染
+  renderVal('k-aov-cac', d.cac > 0 ? d.aov / d.cac : null, p?.cac > 0 ? p.aov / p.cac : null, v => v.toFixed(2) + '×', 1);
+  const prevSpendPctNet = (p && p.net > 0 && p.sp > 0) ? p.sp / p.net * 100 : null;
+  renderVal('k-spend-pct', spendPctNet, prevSpendPctNet, fmtP, -1);
+  
+  const prevRetP = (p&&p.gross!==null&&p.disc!==null&&(p.gross-Math.abs(p.disc||0))>0)?Math.abs((p.ret||0)/(p.gross-Math.abs(p.disc||0))*100):null;
+  renderVal('k-ret-rate', currRetP, prevRetP, fmtP, -1);
+  
+  const prevDiscP = (p&&p.gross>0)?Math.abs((p.disc/p.gross)*100):null;
+  renderVal('k-disc-rate', currDiscP, prevDiscP, fmtP, -1);
+
+  if (F.media === 'google') { 
+      $('k-atc-rate').innerHTML = '—'; 
+      $('k-cp-atc').innerHTML = '—'; 
+  } else {
       renderVal('k-atc-rate', d.clicks > 0 ? (d.atc / d.clicks) * 100 : null, p && p.clicks > 0 ? (p.atc / p.clicks) * 100 : null, fmtP, 1);
+      renderVal('k-cp-atc', d.atc > 0 ? d.sp / d.atc : null, p && p.atc > 0 ? p.sp / p.atc : null, v => '$' + v.toFixed(1), -1);
   }
 
-  /* FUNNEL */
+  /* SPEND SPLIT 雙色條 */
+  if ($('split-meta-bar')) {
+    const metaPct = d.sp > 0 ? (d.ms / d.sp * 100) : (d.ms === 0 && d.gs === 0 ? 50 : d.ms === 0 ? 0 : 100);
+    const gadsPct = 100 - metaPct;
+    $('split-meta-bar').style.width = metaPct.toFixed(1) + '%';
+    $('split-gads-bar').style.width = gadsPct.toFixed(1) + '%';
+    $('split-meta-pct').textContent = metaPct.toFixed(1) + '%';
+    $('split-gads-pct').textContent = gadsPct.toFixed(1) + '%';
+    $('k-split-ratio').textContent = d.sp > 0 ? metaPct.toFixed(0) + ' : ' + gadsPct.toFixed(0) : '—';
+    $('k-split-abs').textContent = d.sp > 0 ? `Meta ${fmtN(d.ms)} / Google ${fmtN(d.gs)}` : '—';
+  }
+
+  /* NEW/RETURNING SECTION: 顯示/隱藏 */
+  const nrSection = $('nr-section');
+  if (nrSection) nrSection.style.display = F.media === 'all' ? '' : 'none';
+  if (F.media === 'all' && d.nrData) renderNRBlock(d.nrData, pl);
+
+  /* FUNNEL — 5 steps */
+  // Step 0: Impressions
+  $('f-impr').textContent = fmtI(d.impr);
+  $('fb-impr').style.width = '100%';
+  // Step 1: Clicks + CTR
   $('f-clk').textContent = fmtI(d.clicks);
-  $('f-purch').textContent = fmtI(d.purch);
-  $('fb-clk').style.width = '100%';
-  $('fb-purch').style.width = d.clicks > 0 ? Math.min(100, (d.purch / d.clicks * 100)) + '%' : '0%';
-  if (F.media === 'google') { $('f-atc').textContent = '—'; $('f-atc-rate').textContent = '—'; $('f-atc-rate').style.opacity = 0; $('fb-atc').style.width = '0%'; } 
-  else { $('f-atc').textContent = fmtI(d.atc); $('f-atc-rate').textContent = d.clicks > 0 ? (d.atc / d.clicks * 100).toFixed(1) + '%' : '—'; $('f-atc-rate').style.opacity = d.atc > 0 ? 1 : 0; $('fb-atc').style.width = d.clicks > 0 ? Math.min(100, (d.atc / d.clicks * 100)) + '%' : '0%'; }
-  $('f-purch-rate').textContent = (d.atc > 0 && F.media !== 'google') ? (d.purch / d.atc * 100).toFixed(1) + '%' : '—';
-  $('f-purch-rate').style.opacity = d.purch > 0 ? 1 : 0;
+  const ctrPct = d.impr>0 ? d.clicks/d.impr*100 : 0;
+  $('f-clk-ctr').textContent = d.impr>0 ? ctrPct.toFixed(2)+'% CTR' : '—';
+  $('f-clk-ctr').style.opacity = d.impr>0 ? 1 : 0;
+  $('fb-clk').style.width = d.impr>0 ? Math.min(100,(d.clicks/d.impr*100))+'%' : '100%';
+  // Steps 2-3: ATC + Purchases
+  if(F.media==='google'){
+    $('f-atc').textContent='—'; $('f-atc-rate').textContent='—'; $('f-atc-rate').style.opacity=0; $('fb-atc').style.width='0%';
+  } else {
+    $('f-atc').textContent=fmtI(d.atc);
+    $('f-atc-rate').textContent=d.clicks>0?(d.atc/d.clicks*100).toFixed(1)+'% ATC':' — ';
+    $('f-atc-rate').style.opacity=d.atc>0?1:0;
+    $('fb-atc').style.width=d.clicks>0?Math.min(100,(d.atc/d.clicks*100))+'%':'0%';
+  }
+  $('f-purch').textContent=fmtI(d.purch);
+  $('fb-purch').style.width=d.clicks>0?Math.min(100,(d.purch/d.clicks*100))+'%':'0%';
+  $('f-purch-rate').textContent=(d.atc>0&&F.media!=='google')?(d.purch/d.atc*100).toFixed(1)+'% CVR':'—';
+  $('f-purch-rate').style.opacity=d.purch>0?1:0;
+  // Step 4: Revenue
+  $('f-rev').textContent=d.net!==null?fmtN(d.net):'—';
+  if($('f-aov-pill')){$('f-aov-pill').textContent=d.purch>0&&d.aov>0?'AOV '+fmtN(d.aov):'—';$('f-aov-pill').style.opacity=d.purch>0?1:0;}
+  // Dropout badges
+  const dImpClk=d.impr>d.clicks?d.impr-d.clicks:0;
+  const dClkAtc=F.media!=='google'&&d.clicks>d.atc?d.clicks-d.atc:0;
+  const dAtcPch=F.media!=='google'&&d.atc>d.purch?d.atc-d.purch:0;
+  const showDrop=(el,v)=>{if(!$(el))return;if(v>0){$(el).textContent='-'+Math.round(v).toLocaleString();$(el).style.display='inline-block';}else $(el).style.display='none';};
+  showDrop('f-drop-impr-clk',dImpClk);
+  showDrop('f-drop-clk-atc',dClkAtc);
+  showDrop('f-drop-atc-purch',dAtcPch);
 
   // KPI Progress
   const netProgWrap = $('k-net-prog');
@@ -1261,7 +1717,7 @@ function render(){
     const vc = 'color:var(--accent)';
     let diffHtml = '';
     const pVal = p ? p.brandRows.find(x => x.brand === b.brand)?.[metric] : null;
-    if (F.comparePrev && pVal !== null) {
+    if (F.compareMode !== 'off' && pVal !== null) {
       const diff = val - pVal;
       if (Math.abs(diff) >= 0.01) {
         const dCls = diff > 0 ? 'up' : 'dn'; const dSign = diff > 0 ? '↑' : '↓';
@@ -1289,108 +1745,105 @@ function render(){
   `;
   
   renderMainTrend(d.tsSeries);
-  renderStack(d.brandRows, d.targetBrands);
+  renderBrandTrend(d.bStack, d.tsSeries, d.targetBrands);
+  if($('brand-trend-badge'))$('brand-trend-badge').textContent=d.dayCount<=1?'1 day':d.dayCount<=7?'7 days':d.dayCount<=31?'30 days':d.dayCount<=92?'90 days':'custom';
+  renderStack(d.brandRows, d.targetBrands, isSingleMonth, currentMonthKpi);
   renderSpend(d.tsSeries); renderHeat(d.heat, d.tsKeys, d.dayCount);
-  renderTable(d.brandRows, d.dayRows, isSingleMonth, monthDays, d.dayCount, currentMonthKpi);
+  renderTable(d.brandRows, d.dayRows, isSingleMonth, monthDays, d.dayCount, currentMonthKpi, dPrev?dPrev.brandRows:null, compareLabel, d);
 }
 
 const tc='#64748b',gc='#f1f5f9';
 function dc(id){if(charts[id]){charts[id].destroy();delete charts[id];}}
 
-function renderMainTrend(series) {
+function renderMainTrend(series){
   dc('mainTrend');
-  const isRevMode = window.trendMode === 'rev';
-  const legBox = $('trend-legend-box');
-  
-  if (isRevMode) {
-    legBox.innerHTML = `
-      <div class="leg"><div class="leg-sq" style="background-color:#0f3a5e"></div>Net Revenue</div>
-      <div class="leg"><div class="leg-sq" style="background-color:#3b82f6"></div>Ad Spend</div>
-    `;
-    charts.mainTrend = new Chart($('mainTrendC'), {
-      type: 'bar',
-      data: {
-        labels: series.map(s => s.label),
-        datasets: [
-          { label: 'Net Revenue', data: series.map(s => Math.round(s.net)), backgroundColor: '#0f3a5e', stack: 's' },
-          { label: 'Ad Spend', data: series.map(s => Math.round(s.spend)), backgroundColor: '#3b82f6', stack: 's' }
-        ]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            mode: 'index', intersect: false,
-            callbacks: {
-              label: ctx => {
-                const val = ctx.raw;
-                const total = ctx.chart.data.datasets[0].data[ctx.dataIndex] + ctx.chart.data.datasets[1].data[ctx.dataIndex];
-                if (ctx.datasetIndex === 1) {
-                   const rev = ctx.chart.data.datasets[0].data[ctx.dataIndex];
-                   const pct = rev > 0 ? (val / rev * 100).toFixed(1) : 0;
-                   return ` Ad Spend: $${val.toLocaleString()} (${pct}% of Rev)`;
-                }
-                return ` Net Revenue: $${val.toLocaleString()}`;
-              }
-            }
-          }
-        },
-        scales: {
-          x: { stacked: true, ticks: { color: tc, font: { size: 10 } }, grid: { display: false } },
-          y: { stacked: true, ticks: { color: tc, font: { size: 10 }, callback: v => '$' + v.toLocaleString() }, grid: { color: gc } }
-        }
-      }
-    });
+  const labels=series.map(s=>s.label);
+  const legBox=$('trend-legend-box');
+  if(window.trendMode==='roi'){
+    if(legBox)legBox.innerHTML=`<div class="leg"><div class="leg-sq" style="background-color:#3b82f6"></div>Ad Spend</div><div class="leg"><div class="leg-sq" style="background-color:#0f3a5e;border-radius:2px"></div>ROI</div>`;
+    charts.mainTrend=new Chart($('mainTrendC'),{type:'line',data:{labels,datasets:[
+      {label:'Ad Spend',data:series.map(s=>Math.round(s.spend)),borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,0.07)',fill:true,tension:0.3,pointRadius:3,yAxisID:'y'},
+      {label:'ROI',data:series.map(s=>s.roi>0?Math.round(s.roi*100)/100:null),borderColor:'#0f3a5e',backgroundColor:'transparent',tension:0.3,pointRadius:3,yAxisID:'y2',borderDash:[4,3]}
+    ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},datalabels:{display:false}},scales:{x:{grid:{display:false},ticks:{color:tc,font:{size:10}}},y:{position:'left',grid:{color:gc},ticks:{color:tc,font:{size:10},callback:v=>'$'+v.toLocaleString()}},y2:{position:'right',grid:{display:false},ticks:{color:tc,font:{size:10},callback:v=>v.toFixed(1)+'×'}}}}});
   } else {
-    legBox.innerHTML = `
-      <div class="leg"><div class="leg-line" style="background-color:#3b82f6"></div>Ad Spend</div>
-      <div class="leg"><div class="leg-line" style="background-color:#0f3a5e"></div>ROI / ROAS</div>
-    `;
-    charts.mainTrend = new Chart($('mainTrendC'), {
-      type: 'line',
-      data: {
-        labels: series.map(s => s.label),
-        datasets: [
-          { label: 'Ad Spend', data: series.map(s => Math.round(s.spend)), borderColor: '#3b82f6', backgroundColor: 'transparent', yAxisID: 'y', tension: 0.3, pointRadius: 4 },
-          { label: 'ROI', data: series.map(s => s.roi !== null ? Math.round(s.roi * 10) / 10 : null), borderColor: '#0f3a5e', backgroundColor: 'transparent', yAxisID: 'y2', tension: 0.3, pointRadius: 4 }
-        ]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        interaction: { mode: 'index', intersect: false },
-        plugins: { legend: { display: false } },
-        scales: {
-          x: { ticks: { color: tc, font: { size: 10 } }, grid: { display: false } },
-          y: { type: 'linear', display: true, position: 'left', ticks: { color: '#3b82f6', callback: v => '$' + v.toLocaleString() }, grid: { color: gc } },
-          y2: { type: 'linear', display: true, position: 'right', ticks: { color: '#0f3a5e', callback: v => v.toFixed(1) + '×' }, grid: { display: false } }
-        }
-      }
-    });
+    // Revenue mode: line chart — Net Revenue + Ad Spend lines, ROI on right axis
+    if(legBox)legBox.innerHTML=`<div class="leg"><div class="leg-sq" style="background-color:#0f3a5e"></div>Net Revenue</div><div class="leg"><div class="leg-sq" style="background-color:#3b82f6"></div>Ad Spend</div><div class="leg"><div class="leg-sq" style="background-color:rgba(5,150,105,0.8);border-radius:50%"></div>ROI</div>`;
+    charts.mainTrend=new Chart($('mainTrendC'),{type:'line',data:{labels,datasets:[
+      {label:'Net Revenue',data:series.map(s=>Math.round(s.net)),borderColor:'#0f3a5e',backgroundColor:'rgba(15,58,94,0.06)',fill:true,tension:0.3,pointRadius:3,borderWidth:2,yAxisID:'y'},
+      {label:'Ad Spend',data:series.map(s=>Math.round(s.spend)),borderColor:'#3b82f6',backgroundColor:'transparent',tension:0.3,pointRadius:3,borderWidth:2,yAxisID:'y'},
+      {label:'ROI',data:series.map(s=>s.roi>0?Math.round(s.roi*100)/100:null),borderColor:'rgba(5,150,105,0.8)',backgroundColor:'transparent',tension:0.3,pointRadius:3,borderWidth:2,borderDash:[4,3],yAxisID:'y2'}
+    ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},datalabels:{display:false}},scales:{x:{grid:{display:false},ticks:{color:tc,font:{size:10}}},y:{position:'left',grid:{color:gc},ticks:{color:tc,font:{size:10},callback:v=>'$'+v.toLocaleString()}},y2:{position:'right',grid:{display:false},ticks:{color:'rgba(5,150,105,0.8)',font:{size:10},callback:v=>v.toFixed(1)+'×'}}}}});
   }
 }
 
-function renderStack(brandRows, targetBrands){
+function renderStack(brandRows, targetBrands, isSingleMonth, currentMonthKpi){
   dc('stack');
-  const labels = targetBrands, data = targetBrands.map(bn => { const b = brandRows.find(x => x.brand === bn); return b ? Math.round(b.net) : 0; });
-  charts.stack=new Chart($('stackC'),{type:'bar',data:{labels,datasets:[{label:'Net Revenue',data,backgroundColor:'#0f3a5e',borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:gc},ticks:{callback:v=>'$'+v.toLocaleString()}}}}});
+  const labels=targetBrands;
+  const absData=targetBrands.map(bn=>{const b=brandRows.find(x=>x.brand===bn);return b?Math.round(b.net||0):0;});
+  const total=absData.reduce((s,v)=>s+v,0);
+  const isPct=window.stackMode==='pct';
+  const datasets=[{
+    label:isPct?'Revenue Share %':'Net Revenue',
+    data:isPct?absData.map(v=>total>0?Math.round(v/total*1000)/10:0):absData,
+    backgroundColor:'#0f3a5e',borderRadius:3
+  }];
+  if(!isPct){
+    datasets.push({label:'Ad Spend',data:targetBrands.map(bn=>{const b=brandRows.find(x=>x.brand===bn);return b?Math.round(b.sp||0):0;}),type:'line',borderColor:'#3b82f6',backgroundColor:'transparent',borderWidth:2,pointRadius:3,tension:0.3,yAxisID:'y'});
+    if(isSingleMonth&&currentMonthKpi){
+      datasets.push({label:'KPI Target',data:targetBrands.map(bn=>currentMonthKpi[bn]?.rev||null),type:'line',borderColor:'rgba(220,38,38,0.7)',backgroundColor:'transparent',borderWidth:2,borderDash:[5,4],pointRadius:4,pointStyle:'triangle',tension:0,yAxisID:'y'});
+    }
+  }
+  charts.stack=new Chart($('stackC'),{type:'bar',data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},datalabels:{display:false}},scales:{x:{grid:{display:false},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10},callback:isPct?v=>v+'%':v=>'$'+v.toLocaleString()}}}}});
 }
 
 function renderSpend(series){
   dc('spend');
-  charts.spend=new Chart($('spendC'),{type:'bar',data:{labels:series.map(s=>s.label),datasets:[{label:'Meta',data:series.map(s=>Math.round(s.ms)),backgroundColor:'#0f3a5e',stack:'s'},{label:'Google',data:series.map(s=>Math.round(s.gs)),backgroundColor:'#3b82f6',stack:'s'}]},plugins:[ChartDataLabels],options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},datalabels:{color:'#fff',font:{weight:'bold'},formatter:(v,ctx)=>{const t=ctx.chart.data.datasets[0].data[ctx.dataIndex]+ctx.chart.data.datasets[1].data[ctx.dataIndex];return v>0&&v/t>0.05?Math.round(v/t*100)+'%':'';}}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:gc},ticks:{callback:v=>'$'+v.toLocaleString()}}}}});
+  const labels=series.map(s=>s.label);
+  const showRoas=window.spendOverlay==='roas';
+  const datasets=[
+    {label:'Meta',data:series.map(s=>Math.round(s.ms)),backgroundColor:'#0f3a5e',stack:'s'},
+    {label:'Google Search',data:series.map(s=>Math.round(s.searchS||0)),backgroundColor:'#2272b3',stack:'s'},
+    {label:'Google PMax',data:series.map(s=>Math.round(s.pmaxS||0)),backgroundColor:'#3b82f6',stack:'s'},
+  ];
+  if(showRoas){
+    datasets.push({label:'Meta ROAS',data:series.map(s=>s.metaRoas!==null?Math.round(s.metaRoas*100)/100:null),type:'line',borderColor:'rgba(15,58,94,0.8)',backgroundColor:'transparent',borderWidth:2,pointRadius:3,tension:0.3,yAxisID:'y2',borderDash:[4,3]});
+    datasets.push({label:'Google ROAS',data:series.map(s=>s.gadsRoas!==null?Math.round(s.gadsRoas*100)/100:null),type:'line',borderColor:'rgba(59,130,246,0.9)',backgroundColor:'transparent',borderWidth:2,pointRadius:3,tension:0.3,yAxisID:'y2',borderDash:[4,3]});
+  } else {
+    datasets.push({label:'Meta CPC',data:series.map(s=>s.metaCpc!==null?Math.round(s.metaCpc*10)/10:null),type:'line',borderColor:'rgba(15,58,94,0.8)',backgroundColor:'transparent',borderWidth:2,pointRadius:3,tension:0.3,yAxisID:'y2'});
+    datasets.push({label:'Google CPC',data:series.map(s=>s.gadsCpc!==null?Math.round(s.gadsCpc*10)/10:null),type:'line',borderColor:'rgba(59,130,246,0.9)',backgroundColor:'transparent',borderWidth:2,pointRadius:3,tension:0.3,yAxisID:'y2'});
+  }
+  charts.spend=new Chart($('spendC'),{type:'bar',data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},datalabels:{display:false}},scales:{x:{stacked:true,grid:{display:false},ticks:{color:tc,font:{size:10}}},y:{stacked:true,grid:{color:gc},ticks:{color:tc,font:{size:10},callback:v=>'$'+v.toLocaleString()}},y2:{type:'linear',display:true,position:'right',grid:{display:false},ticks:{color:tc,font:{size:10},callback:showRoas?v=>v.toFixed(1)+'×':v=>'$'+v.toFixed(1)}}}}});
 }
 
-function renderHeat(hd, tsKeys, dayCount){
-  const hc=v=>{ if(v===null)return'background:#f8fafc;color:#94a3b8'; if(v>=10)return'background:rgba(5,150,105,.2);color:#065f46'; if(v>=6)return'background:rgba(5,150,105,.1);color:#059669'; if(v>=3)return'background:rgba(217,119,6,.15);color:#b45309'; return'background:rgba(220,38,38,.12);color:#b91c1c'; };
-  let h=`<table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr><th style="padding:10px;text-align:left;position:sticky;left:0;background:#fff;z-index:10;">Brand</th>`;
-  tsKeys.forEach(k=>{ h+=`<th style="padding:10px;text-align:center;">${dayCount<=31?k.slice(5):k.slice(5)+'週'}</th>`; });
+function renderHeat(hd, tsKeys, dayCount, countryBrandMatrix, targetBrands){
+  const hc=v=>{
+    if(v===null||v===undefined)return'background:#f8fafc;color:#94a3b8';
+    if(v>=10)return'background:rgba(5,150,105,.25);color:#065f46';
+    if(v>=5)return'background:rgba(5,150,105,.12);color:#059669';
+    if(v>=3)return'background:rgba(217,119,6,.15);color:#b45309';
+    if(v>=0)return'background:rgba(220,38,38,.1);color:#b91c1c';
+    return'background:#f8fafc;color:#94a3b8';
+  };
+  
+  // Brand × Period (default)
+  let h=`<table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr><th style="padding:10px 12px;text-align:left;position:sticky;left:0;background:#fff;z-index:10;min-width:90px">Brand</th>`;
+  tsKeys.forEach(k=>{h+=`<th style="padding:8px 10px;text-align:center;white-space:nowrap">${dayCount<=31?k.slice(5):k.slice(5)+'週'}</th>`;});
   h+='</tr></thead><tbody>';
-  hd.forEach(row=>{ h+=`<tr><td style="padding:8px 12px;font-weight:600;position:sticky;left:0;background:#fff;border-right:0.5px solid var(--rule);z-index:5;">${row.brand}</td>`; row.vals.forEach(v=>{h+=`<td style="padding:4px;"><div style="border-radius:4px;text-align:center;padding:4px;${hc(v)}">${v!==null?v.toFixed(1)+'×':'—'}</div></td>`;}); h+='</tr>'; });
+  hd.forEach(row=>{
+    h+=`<tr><td style="padding:8px 12px;font-weight:600;white-space:nowrap;position:sticky;left:0;background:#fff;border-right:0.5px solid var(--rule);z-index:5">${row.brand}</td>`;
+    row.vals.forEach((v,i)=>{
+      const sp=row.spends?row.spends[i]:0;
+      const spL=sp>0?`<br><span style="font-size:9px;color:#94a3b8">$${Math.round(sp/1000)}K</span>`:'';
+      h+=`<td style="padding:3px"><div style="border-radius:4px;text-align:center;padding:5px 3px;${hc(v)}">${v!==null?v.toFixed(1)+'×':'—'}${spL}</div></td>`;
+    });
+    h+='</tr>';
+  });
   $('heat-table').innerHTML=h+'</tbody></table>';
+  const colSums=tsKeys.map((_,i)=>{const vs=hd.map(r=>r.vals[i]).filter(v=>v!==null);return vs.length?vs.reduce((s,v)=>s+v,0)/vs.length:null;});
+  $('heat-sum').innerHTML='<span style="font-weight:600;font-size:11px;color:var(--ink4)">AVG</span>'+colSums.map(v=>`<span>${v!==null?v.toFixed(1)+'×':'—'}</span>`).join('');
 }
 
-function renderTable(brandRows, dayRows, isSingleMonth, monthDays, periodDays, currentMonthKpi){
+function renderTable(brandRows, dayRows, isSingleMonth, monthDays, periodDays, currentMonthKpi, prevBrandRows, compareLabel, dAgg){
   const isBrand=dimMode==='brand'; const head=$('tbl-head'), tbody=$('tbl-body'), tfoot=$('tbl-foot');
   const revHeaderName = F.media === 'all' ? 'Net Rev (E)' : 'Platform Rev';
   if(isBrand){
@@ -1400,51 +1853,76 @@ function renderTable(brandRows, dayRows, isSingleMonth, monthDays, periodDays, c
       <th onclick="srt('cvr')">CVR%</th><th onclick="srt('ms')">Meta $</th><th onclick="srt('gs')">Google $</th>
       <th onclick="srt('sp')">Total Spend</th><th onclick="srt('cac')">CAC</th><th onclick="srt('aov')">AOV</th>
       <th onclick="srt('roi')">ROI/ROAS</th>
-      <th onclick="srt('net')">${revHeaderName}</th><th onclick="srt('gross')">Gross (B)</th><th>Status</th>
+      <th onclick="srt('gross')">Gross (B)</th><th onclick="srt('disc')">Discounts (C)</th>
+      <th onclick="srt('ret')">Returns (D)</th><th onclick="srt('net')">${revHeaderName}</th><th>Status</th>
     </tr>`;
     const sorted=[...brandRows].sort((a,b2)=>{
         const vA = a[sortKey] === null ? -1 : a[sortKey]; const vB = b2[sortKey] === null ? -1 : b2[sortKey];
         return (vA<vB?-1:1)*sortDir;
     });
-    tbody.innerHTML=sorted.map(b=>{
+    const rows=sorted.map(b=>{
       const rv=b.roi!==null ? (b.roi>=5?'var(--ok)':b.roi>=2?'var(--warn)':'var(--red)') : 'var(--ink4)';
       let statusHtml = '';
-      if (b.net === null) { statusHtml = `<span class="tag tg">無對應營收</span>`; } 
+      if (b.net === null) { statusHtml = `<span class="tag tg">無對應營收</span>`; }
       else if (isSingleMonth && F.media === 'all') {
         const bKpi = currentMonthKpi[b.brand] || {rev:0, roi:0};
         if (bKpi.rev > 0 || bKpi.roi > 0) {
           const expectedPct = periodDays / monthDays, revOnTrack = (b.net / bKpi.rev) >= expectedPct, roiOnTrack = b.roi >= bKpi.roi;
-          const revTag = revOnTrack ? 'tok' : 'tbad', roiTag = roiOnTrack ? 'tok' : 'tbad';
           statusHtml = `<div style="display:flex;gap:4px;flex-direction:column;align-items:flex-start">
-              <span class="tag ${revTag}">Rev ${revOnTrack?'達標':'落後'}</span>
-              <span class="tag ${roiTag}">ROI ${roiOnTrack?'達標':'落後'}</span></div>`;
+              <span class="tag ${revOnTrack?'tok':'tbad'}">Rev ${revOnTrack?'達標':'落後'}</span>
+              <span class="tag ${roiOnTrack?'tok':'tbad'}">ROI ${roiOnTrack?'達標':'落後'}</span></div>`;
         } else { statusHtml = `<span class="tag tg">無 KPI</span>`; }
       } else {
-        const rc=b.roi>=5?'tok':b.roi>=2?'twarn':'tbad', rl=b.roi>=5?'Good':b.roi>=2?'Review':'Stop';
-        statusHtml = `<span class="tag ${rc}">${rl}</span>`;
+        // WoW/MoM comparison
+        const prevB = prevBrandRows ? prevBrandRows.find(x=>x.brand===b.brand) : null;
+        if (prevB && prevB.net!==null && b.net!==null && prevB.roi>0 && b.roi>0) {
+          const roiChg=((b.roi-prevB.roi)/prevB.roi*100);
+          const revChg=prevB.net!==0?((b.net-prevB.net)/Math.abs(prevB.net)*100):null;
+          const cl=compareLabel||'vs prev';
+          statusHtml=`<div style="display:flex;gap:3px;flex-direction:column;align-items:flex-start">
+            <span class="tag ${roiChg>=0?'tok':'tbad'}">ROI ${roiChg>=0?'↑':'↓'}${Math.abs(roiChg).toFixed(1)}% (${cl})</span>
+            ${revChg!==null?`<span class="tag ${revChg>=0?'tok':'tbad'}">Rev ${revChg>=0?'↑':'↓'}${Math.abs(revChg).toFixed(1)}%</span>`:''}
+          </div>`;
+        } else {
+          const rc=b.roi>=5?'tok':b.roi>=2?'twarn':'tbad', rl=b.roi>=5?'Good':b.roi>=2?'Review':'Stop';
+          statusHtml=`<span class="tag ${rc}">${rl}</span>`;
+        }
       }
-
-      return`<tr><td style="font-weight:700;color:var(--accent)">${b.brand}</td><td class="num" style="color:var(--ink2)">${b.days}</td>
+      const bid=b.brand.replace(/[^a-zA-Z0-9]/g,'_');
+      const safeB=b.brand.replace(/'/g,"\\'");
+      return`<tr class="brand-main-row" id="main-row-${bid}" onclick="toggleBrandAccordion('${safeB}')">
+        <td style="font-weight:700;color:var(--accent)"><span class="expand-btn">▶</span>${b.brand}</td>
+        <td class="num" style="color:var(--ink2)">${b.days}</td>
         <td class="num">${Math.round(b.clicks).toLocaleString()}</td><td class="num">${b.cpc>0?'$'+b.cpc.toFixed(1):'—'}</td>
         <td class="num">${b.ctr>0?b.ctr.toFixed(2)+'%':'—'}</td>
         <td class="num">${b.purchases!==null?Math.round(b.purchases).toLocaleString():'—'}</td>
         <td class="num">${b.cvr!==null&&b.cvr>0?b.cvr.toFixed(2)+'%':'—'}</td>
         <td><span class="tag tm">$${Math.round(b.ms).toLocaleString()}</span></td>
-        <td><span class="tag" style="background:#eff6ff;color:#2563eb">$${Math.round(b.gs).toLocaleString()}</span></td><td class="num" style="font-weight:600;color:var(--accent)">$${Math.round(b.sp).toLocaleString()}</td>
+        <td><span class="tag" style="background:#eff6ff;color:#2563eb">$${Math.round(b.gs).toLocaleString()}</span></td>
+        <td class="num" style="font-weight:600;color:var(--accent)">$${Math.round(b.sp).toLocaleString()}</td>
         <td class="num" style="font-weight:600;color:var(--accent)">${b.cac>0?'$'+b.cac.toFixed(1):'—'}</td>
         <td class="num" style="font-weight:600;color:var(--accent)">${b.aov>0?'$'+Math.round(b.aov).toLocaleString():'—'}</td>
         <td class="num" style="color:${rv};font-weight:700">${b.roi!==null&&b.roi>0?b.roi.toFixed(2)+'×':'—'}</td>
-        <td class="num" style="font-weight:600;color:var(--accent)">${b.net!==null?'$'+Math.round(b.net).toLocaleString():'—'}</td>
         <td class="num">${b.gross!==null?'$'+Math.round(b.gross).toLocaleString():'—'}</td>
-        <td>${statusHtml}</td></tr>`;
-    }).join('');
+        <td class="num" style="color:var(--warn)">${b.disc!==null?'$'+Math.round(Math.abs(b.disc)).toLocaleString():'—'}</td>
+        <td class="num" style="color:var(--red)">${b.ret!==null?'$'+Math.round(Math.abs(b.ret)).toLocaleString():'—'}</td>
+        <td class="num" style="font-weight:600;color:var(--accent)">${b.net!==null?'$'+Math.round(b.net).toLocaleString():'—'}</td>
+        <td>${statusHtml}</td>
+      </tr>
+      <tr class="brand-expand-row" id="expand-row-${bid}" style="display:none">
+        <td colspan="18"><div class="brand-expand-inner" id="expand-inner-${bid}"></div></td>
+      </tr>`;
+    });
+    tbody.innerHTML=rows.join('');
   } else {
     head.innerHTML=`<tr>
       <th onclick="srtD('date')">DATE</th><th onclick="srtD('clicks')">CLICKS</th><th onclick="srtD('cpc')">CPC</th>
       <th onclick="srtD('ctr')">CTR%</th><th onclick="srtD('purchases')">PURCHASES</th><th onclick="srtD('cvr')">CVR%</th>
       <th onclick="srtD('ms')">META $</th><th onclick="srtD('gs')">GOOGLE $</th><th onclick="srtD('sp')">TOTAL SPEND</th>
       <th onclick="srtD('cac')">CAC</th><th onclick="srtD('aov')">AOV</th>
-      <th onclick="srtD('roi')">ROI</th><th onclick="srtD('roas')">ROAS</th><th onclick="srtD('net')">${revHeaderName.toUpperCase()}</th><th onclick="srtD('gross')">GROSS (B)</th>
+      <th onclick="srtD('roi')">ROI</th><th onclick="srtD('roas')">ROAS</th>
+      <th onclick="srtD('gross')">GROSS (B)</th><th onclick="srtD('disc')">DISCOUNTS (C)</th>
+      <th onclick="srtD('ret')">RETURNS (D)</th><th onclick="srtD('net')">${revHeaderName.toUpperCase()}</th>
     </tr>`;
     const sortedD=[...dayRows].sort((a,b2)=>{
         const vA = a[sortKey] === null ? -1 : a[sortKey]; const vB = b2[sortKey] === null ? -1 : b2[sortKey];
@@ -1458,13 +1936,16 @@ function renderTable(brandRows, dayRows, isSingleMonth, monthDays, periodDays, c
         <td class="num">${b.purchases!==null?Math.round(b.purchases).toLocaleString():'—'}</td>
         <td class="num">${b.cvr!==null&&b.cvr>0?b.cvr.toFixed(2)+'%':'—'}</td>
         <td><span class="tag tm">$${Math.round(b.ms).toLocaleString()}</span></td>
-        <td><span class="tag tg">$${Math.round(b.gs).toLocaleString()}</span></td><td class="num" style="font-weight:600;color:var(--accent)">$${Math.round(b.sp).toLocaleString()}</td>
+        <td><span class="tag tg">$${Math.round(b.gs).toLocaleString()}</span></td>
+        <td class="num" style="font-weight:600;color:var(--accent)">$${Math.round(b.sp).toLocaleString()}</td>
         <td class="num" style="font-weight:600;color:var(--accent)">${b.cac>0?'$'+b.cac.toFixed(1):'—'}</td>
         <td class="num" style="font-weight:600;color:var(--accent)">${b.aov>0?'$'+Math.round(b.aov).toLocaleString():'—'}</td>
         <td class="num" style="color:${rv};font-weight:700">${b.roi!==null&&b.roi>0?b.roi.toFixed(2)+'×':'—'}</td>
         <td class="num">${b.roas!==null&&b.roas>0?b.roas.toFixed(2)+'×':'—'}</td>
-        <td class="num" style="font-weight:600;color:var(--accent)">${b.net!==null?'$'+Math.round(b.net).toLocaleString():'—'}</td>
-        <td class="num">${b.gross!==null?'$'+Math.round(b.gross).toLocaleString():'—'}</td></tr>`;
+        <td class="num">${b.gross!==null?'$'+Math.round(b.gross).toLocaleString():'—'}</td>
+        <td class="num" style="color:var(--warn)">${b.disc!==null?'$'+Math.round(Math.abs(b.disc)).toLocaleString():'—'}</td>
+        <td class="num" style="color:var(--red)">${b.ret!==null?'$'+Math.round(Math.abs(b.ret)).toLocaleString():'—'}</td>
+        <td class="num" style="font-weight:600;color:var(--accent)">${b.net!==null?'$'+Math.round(b.net).toLocaleString():'—'}</td></tr>`;
     }).join('');
   }
 }
@@ -1474,12 +1955,12 @@ function srtD(key){if(sortKey===key)sortDir*=-1;else{sortKey=key;sortDir=-1;}ren
 
 function openSettings() { $('inp-meta').value = CONFIG.metaId; $('inp-gads').value = CONFIG.gadsId; $('inp-sales').value = CONFIG.salesId; $('settings-modal').classList.add('show'); }
 function closeSettings() { $('settings-modal').classList.remove('show'); }
-function saveSettings() { CONFIG.metaId = $('inp-meta').value.trim(); CONFIG.gadsId = $('inp-gads').value.trim(); CONFIG.salesId = $('inp-sales').value.trim(); localStorage.setItem('emers_meta_id', CONFIG.metaId); localStorage.setItem('emers_gads_id', CONFIG.gadsId); localStorage.setItem('emers_sales_id', CONFIG.salesId); closeSettings(); loadData(); }
+function saveSettings() { CONFIG.metaId = $('inp-meta').value.trim(); CONFIG.gadsId = $('inp-gads').value.trim(); CONFIG.salesId = $('inp-sales').value.trim(); localStorage.setItem('emers_2xu_meta_id', CONFIG.metaId); localStorage.setItem('emers_2xu_gads_id', CONFIG.gadsId); localStorage.setItem('emers_2xu_sales_id', CONFIG.salesId); closeSettings(); loadData(); }
 function openKpiSettings() { const currentM = F.dateFrom ? F.dateFrom.substring(0,7) : new Date().toISOString().substring(0,7); $('kpi-month-selector').value = currentM; renderKpiForm(currentM); $('kpi-modal').classList.add('show'); }
 function changeKpiMonth() { const m = $('kpi-month-selector').value; if (m) renderKpiForm(m); }
 function renderKpiForm(monthStr) { const mKpi = getMonthKpi(monthStr); let html = ''; BRANDS.forEach(b => { const rev = mKpi[b]?.rev || 0, roi = mKpi[b]?.roi || 0; html += `<div style="border-bottom:0.5px solid var(--rule); padding-bottom:12px; margin-bottom:12px;"><label style="font-size:13px;font-weight:700;color:var(--accent);">${b}</label><div style="display:flex;gap:12px;"><div class="form-group" style="flex:1"><label>Net Revenue KPI</label><input type="number" id="kpi-rev-${b.replace(/[\/ ]/g,'_')}" value="${rev}"></div><div class="form-group" style="flex:1"><label>ROI KPI</label><input type="number" step="0.1" id="kpi-roi-${b.replace(/[\/ ]/g,'_')}" value="${roi}"></div></div></div>`; }); $('kpi-form-content').innerHTML = html; }
 function closeKpiSettings() { $('kpi-modal').classList.remove('show'); }
-function saveKpiSettings() { const m = $('kpi-month-selector').value; if (!m) return; if (!KPI_DATA[m]) KPI_DATA[m] = {}; BRANDS.forEach(b => { KPI_DATA[m][b] = { rev: parseFloat($(`kpi-rev-${b.replace(/[\/ ]/g,'_')}`).value) || 0, roi: parseFloat($(`kpi-roi-${b.replace(/[\/ ]/g,'_')}`).value) || 0 }; }); localStorage.setItem('emers_kpis_v2', JSON.stringify(KPI_DATA)); closeKpiSettings(); render(); }
+function saveKpiSettings() { const m = $('kpi-month-selector').value; if (!m) return; if (!KPI_DATA[m]) KPI_DATA[m] = {}; BRANDS.forEach(b => { KPI_DATA[m][b] = { rev: parseFloat($(`kpi-rev-${b.replace(/[\/ ]/g,'_')}`).value) || 0, roi: parseFloat($(`kpi-roi-${b.replace(/[\/ ]/g,'_')}`).value) || 0 }; }); localStorage.setItem('emers_2xu_kpis_v2', JSON.stringify(KPI_DATA)); closeKpiSettings(); render(); }
 
 async function loadData(){
   showStatus('loading','Syncing Sheets...');
@@ -1487,53 +1968,195 @@ async function loadData(){
   const urlGads = `https://docs.google.com/spreadsheets/d/${CONFIG.gadsId}/gviz/tq?tqx=out:csv&sheet=gads_by+brand_contry`;
   const urlSales = `https://docs.google.com/spreadsheets/d/${CONFIG.salesId}/gviz/tq?tqx=out:csv&sheet=all+brand+sale`;
   try{
- const [rM,rG,rS]=await Promise.all([csv(urlMeta),csv(urlGads),csv(urlSales)]);
-    
-    // 核心安全機制：資料一解析完，立刻在記憶體中刪除所有非 2XU 的數據
-    RAW.meta = parseMeta(rM).filter(r => BRANDS.includes(r.brand)); 
-    RAW.gads = parseGads(rG).filter(r => BRANDS.includes(r.brand)); 
-    RAW.sales = parseSales(rS).filter(r => BRANDS.includes(r.brand));
-    
-    brandToCountries = {}; countryToBrands = {};
-    [...RAW.meta, ...RAW.gads, ...RAW.sales].forEach(r => {
-      if (!r.brand || !r.country) return; (r.countries || [r.country]).forEach(c => { if (KNOWN_COUNTRIES.includes(c) && BRANDS.includes(r.brand)) { if (!brandToCountries[r.brand]) brandToCountries[r.brand] = new Set(); brandToCountries[r.brand].add(c); if (!countryToBrands[c]) countryToBrands[c] = new Set(); countryToBrands[c].add(r.brand); } });
-    });
-    for(let b in brandToCountries) brandToCountries[b] = Array.from(brandToCountries[b]);
-    for(let c in countryToBrands) countryToBrands[c] = Array.from(countryToBrands[c]);
+    const [rM,rG,rS]=await Promise.all([csv(urlMeta),csv(urlGads),csv(urlSales)]);
+    // 代理商安全機制：資料解析後立即過濾，只保留 2XU 品牌資料
+    RAW.meta=parseMeta(rM).filter(r=>BRANDS.includes(r.brand));
+    RAW.gads=parseGads(rG).filter(r=>BRANDS.includes(r.brand));
+    RAW.sales=parseSales(rS).filter(r=>BRANDS.includes(r.brand));
     const now=new Date().toLocaleString('zh-TW'); $('last-upd').textContent=now; $('footer-ts').textContent='Last sync '+now;
-    showStatus('ok',`✅ Synced: Meta(${RAW.meta.length}), Google(${RAW.gads.length}), Sales(${RAW.sales.length})`);
+
+    // ── Google Sheets 收合列群組警告（方案 C）──
+    // 取 Sales 最近 30 天資料，檢查每個品牌的覆蓋率
+    const checkTo = daysAgo(1), checkFrom = daysAgo(30);
+    const salesWindow = RAW.sales.filter(r=>r.date>=checkFrom&&r.date<=checkTo);
+    const sparseWarningBrands = BRANDS.filter(bn=>{
+      const brandDates = new Set(salesWindow.filter(r=>r.brand===bn).map(r=>r.date));
+      return brandDates.size > 0 && brandDates.size < 9; // 30天內少於9天(30%)視為稀疏
+    });
+    if(sparseWarningBrands.length){
+      const names = sparseWarningBrands.join('、');
+      showStatus('error', `⚠️ 部分品牌資料可能因 Google Sheets 列群組收合而缺失（${names}）。建議展開所有群組後重新 Sync。`);
+      setTimeout(()=>showStatus('ok',`✅ Synced: Meta(${RAW.meta.length}), Google(${RAW.gads.length}), Sales(${RAW.sales.length})`), 8000);
+    } else {
+      showStatus('ok',`✅ Synced: Meta(${RAW.meta.length}), Google(${RAW.gads.length}), Sales(${RAW.sales.length})`);
+    }
     render(); if(timer)clearInterval(timer); timer=setInterval(loadData,5*60*1000);
   }catch(e){showStatus('error','Load failed: '+e.message);}
 }
 
-// --- 強制隱藏敏感 UI 與無關選項 ---
+F.dateFrom=daysAgo(7); F.dateTo=daysAgo(1);
 
-// 1. 隱藏品牌篩選器（因為只有 2XU，不需要切換）
+// ── 代理商版初始化：強制鎖定 2XU，隱藏無關 UI ──
+F.brand = ['2XU HK', '2XU TW'];
+F.country = ['all'];
+
+// 隱藏品牌篩選器（只有 2XU，不需要切換）
 if($('cg-brand')) $('cg-brand').style.display = 'none';
 
-// 2. 處理市場篩選器：保留，但隱藏 SG 與 MY 按鈕
-const marketChips = document.querySelectorAll('#market-filters .chip');
-marketChips.forEach(chip => {
-  const c = chip.dataset.c;
-  if (c === 'SG' || c === 'MY') {
-    chip.style.display = 'none'; // 把用不到的國家隱藏
-  }
+// 隱藏 Market 中的 SG / MY（2XU 無此市場）
+document.querySelectorAll('#market-filters .chip').forEach(chip => {
+  if(chip.dataset.c === 'SG' || chip.dataset.c === 'MY') chip.style.display = 'none';
 });
 
-// 3. 隱藏設定按鈕（保護 Sheet ID 與 KPI 不被修改）
+// 隱藏 Data Sources 與 KPI Targets 按鈕（保護設定不被修改）
 document.querySelectorAll('header .btn').forEach(btn => {
   if(btn.textContent.includes('Data Sources') || btn.textContent.includes('KPI Targets')) {
     btn.style.display = 'none';
   }
 });
 
-// 強制綁定預設值
-F.brand = BRANDS; 
-F.country = ['all'];
-F.dateFrom = daysAgo(7); 
-F.dateTo = daysAgo(1);
-
 loadData();
+
+/* ── NEW/RETURNING BLOCK ── */
+function renderNRBlock(nrData, periodLabel) {
+  const warn = $('nr-warning');
+  if (warn) {
+    const hasMissing = !RAW._hasCustType || !RAW._hasOrders;
+    warn.style.display = hasMissing ? '' : 'none';
+    if (hasMissing && $('nr-warning-text')) {
+      $('nr-warning-text').textContent =
+        !RAW._hasCustType && !RAW._hasOrders ? '銷售資料缺少「新舊客」和「訂單」欄位，請確認 Google Sheet 已更新至新格式。'
+        : !RAW._hasCustType ? '銷售資料缺少「新舊客」欄位，無法計算新客/回頭客分析。'
+        : '銷售資料缺少「訂單」欄位，AOV 數值無法計算。';
+    }
+  }
+  if ($('nr-period-badge')) $('nr-period-badge').textContent = periodLabel || '—';
+  const set = (id, val) => { const el = $(id); if (el) el.innerHTML = val; };
+  const setW = (id, pct) => { const el = $(id); if (el) el.style.width = Math.max(0, Math.min(100, pct)).toFixed(1) + '%'; };
+
+  // 訂單數
+  const totalOrders = (nrData.newOrders||0) + (nrData.retOrders||0);
+  const newOPct = totalOrders > 0 ? nrData.newOrders / totalOrders * 100 : 0;
+  const retOPct = 100 - newOPct;
+  set('nr-orders-total', totalOrders > 0 ? `合計 ${totalOrders.toLocaleString()} 筆` : '—');
+  setW('nr-orders-new-bar', newOPct); setW('nr-orders-ret-bar', retOPct);
+  set('nr-orders-new-pct', totalOrders > 0 ? newOPct.toFixed(1)+'%' : '—');
+  set('nr-orders-ret-pct', totalOrders > 0 ? retOPct.toFixed(1)+'%' : '—');
+  set('nr-orders-new-abs', nrData.newOrders > 0 ? nrData.newOrders.toLocaleString()+' 筆' : '—');
+  set('nr-orders-ret-abs', nrData.retOrders > 0 ? nrData.retOrders.toLocaleString()+' 筆' : '—');
+
+  // 淨營業額
+  const totalRev = (nrData.newNet||0) + (nrData.retNet||0);
+  const newRPct = totalRev !== 0 ? Math.max(0, nrData.newNet / totalRev * 100) : 0;
+  const retRPct = 100 - newRPct;
+  set('nr-rev-total', totalRev !== 0 ? `合計 ${fmtN(totalRev)}` : '—');
+  setW('nr-rev-new-bar', newRPct); setW('nr-rev-ret-bar', retRPct);
+  set('nr-rev-new-pct', totalRev !== 0 ? newRPct.toFixed(1)+'%' : '—');
+  set('nr-rev-ret-pct', totalRev !== 0 ? retRPct.toFixed(1)+'%' : '—');
+  set('nr-rev-new-abs', nrData.newNet !== 0 ? fmtN(nrData.newNet) : '—');
+  set('nr-rev-ret-abs', nrData.retNet !== 0 ? fmtN(nrData.retNet) : '—');
+
+  // AOV 對比
+  set('nr-new-aov', nrData.newAOV !== null ? fmtN(nrData.newAOV) : '<span style="color:var(--ink4);font-size:14px">無訂單資料</span>');
+  set('nr-ret-aov', nrData.retAOV !== null ? fmtN(nrData.retAOV) : '<span style="color:var(--ink4);font-size:14px">無訂單資料</span>');
+  if ($('nr-aov-diff') && nrData.newAOV !== null && nrData.retAOV !== null) {
+    const diff = nrData.retAOV - nrData.newAOV;
+    const col = diff >= 0 ? 'var(--ok)' : 'var(--red)';
+    const sign = diff >= 0 ? '+' : '';
+    $('nr-aov-diff').innerHTML = `<span style="color:${col}">${sign}${fmtN(Math.abs(diff))}</span><br><span style="font-size:10px;color:var(--ink4)">(回頭客 vs 新客)</span>`;
+  }
+}
+
+/* ── BRAND TREND CHART ── */
+function renderBrandTrend(bStack, tsSeries, targetBrands){
+  dc('brandTrend');
+  if(!$('brandTrendC'))return;
+  const bColors=['#0f3a5e','#1a5a8e','#2272b3','#3b82f6','#60a5fa','#0ea5e9','#0284c7','#0369a1'];
+  const labels=tsSeries.map(s=>s.label);
+  const datasets=targetBrands.map((bn,i)=>({
+    label:bn,
+    data:(bStack[bn]||[]).map(v=>Math.round(v||0)),
+    borderColor:bColors[i%bColors.length],
+    backgroundColor:'transparent',
+    tension:0.3,pointRadius:3,borderWidth:2
+  })).filter(ds=>ds.data.some(v=>v>0));
+  // Legend
+  const legBox=$('brand-trend-legend');
+  if(legBox)legBox.innerHTML=datasets.map((ds,i)=>`<div class="leg"><div class="leg-circle" style="background:${bColors[targetBrands.indexOf(ds.label)%bColors.length]}"></div>${ds.label}</div>`).join('');
+  charts.brandTrend=new Chart($('brandTrendC'),{
+    type:'line',data:{labels,datasets},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:false},datalabels:{display:false}},
+      scales:{x:{grid:{display:false},ticks:{color:tc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:10},callback:v=>'$'+v.toLocaleString()}}}}
+  });
+}
+
+/* ── ACCORDION: BRAND × DAY ── */
+function computeBrandDayRows(brand){
+  const mf=F.media!=='google', gf=F.media!=='meta';
+  const m2=mf?RAW.meta.filter(r=>r.date>=F.dateFrom&&r.date<=F.dateTo&&r.brand===brand):[];
+  const g2=gf?RAW.gads.filter(r=>r.date>=F.dateFrom&&r.date<=F.dateTo&&r.brand===brand):[];
+  const s2=RAW.sales.filter(r=>r.date>=F.dateFrom&&r.date<=F.dateTo&&r.brand===brand);
+  const allDates=new Set([...m2.map(r=>r.date),...g2.map(r=>r.date),...(F.media==='all'?s2.map(r=>r.date):[])]);
+  return Array.from(allDates).sort().map(dt=>{
+    const dm=m2.filter(r=>r.date===dt),dg=g2.filter(r=>r.date===dt),ds=s2.filter(r=>r.date===dt);
+    const ms=dm.reduce((s,r)=>s+r.spend,0),gs=dg.reduce((s,r)=>s+r.spend,0),sp=ms+gs;
+    const net=F.media==='all'?ds.reduce((s,r)=>s+r.net,0):(F.media==='meta'?dm.reduce((s,r)=>s+r.rev,0):dg.reduce((s,r)=>s+r.rev,0));
+    const gross=F.media==='all'?ds.reduce((s,r)=>s+r.gross,0):null;
+    const disc=F.media==='all'?ds.reduce((s,r)=>s+r.disc,0):null;
+    const ret=F.media==='all'?ds.reduce((s,r)=>s+r.ret,0):null;
+    const clk=dm.reduce((s,r)=>s+r.clicks,0)+dg.reduce((s,r)=>s+r.clicks,0);
+    const pch=dm.reduce((s,r)=>s+r.purchases,0)+dg.reduce((s,r)=>s+r.purchases,0);
+    return{date:dt,ms,gs,sp,net,gross,disc,ret,clicks:clk,purchases:pch,cpc:clk>0?sp/clk:0,roi:sp>0?net/sp:null};
+  });
+}
+
+function toggleBrandAccordion(brand){
+  const bid=brand.replace(/[^a-zA-Z0-9]/g,'_');
+  const expandRow=$('expand-row-'+bid);
+  const mainRow=$('main-row-'+bid);
+  if(!expandRow)return;
+  const isOpen=expandRow.style.display!=='none';
+  document.querySelectorAll('.brand-expand-row').forEach(r=>r.style.display='none');
+  document.querySelectorAll('.brand-main-row').forEach(r=>r.classList.remove('expanded'));
+  if(!isOpen){
+    expandRow.style.display='table-row';
+    mainRow.classList.add('expanded');
+    const inner=$('expand-inner-'+bid);
+    if(inner&&!inner.dataset.populated){
+      const rows=computeBrandDayRows(brand);
+      inner.dataset.populated='1';
+      if(!rows.length){inner.innerHTML='<div style="padding:16px;color:var(--ink4);text-align:center;font-size:12px">此品牌在選定期間無逐日資料</div>';return;}
+      let t=`<table style="width:100%;border-collapse:collapse;font-size:11px"><thead><tr style="background:var(--accent-l)">
+        <th style="padding:8px 12px;text-align:left;font-size:10px;letter-spacing:.5px">DATE</th>
+        <th class="num" style="padding:8px 10px">META $</th><th class="num" style="padding:8px 10px">GOOGLE $</th>
+        <th class="num" style="padding:8px 10px">SPEND</th><th class="num" style="padding:8px 10px">CLICKS</th>
+        <th class="num" style="padding:8px 10px">PURCH.</th><th class="num" style="padding:8px 10px">CPC</th>
+        <th class="num" style="padding:8px 10px">GROSS (B)</th><th class="num" style="padding:8px 10px">DISC (C)</th>
+        <th class="num" style="padding:8px 10px">RETURNS (D)</th><th class="num" style="padding:8px 10px">NET (E)</th>
+        <th class="num" style="padding:8px 10px">ROI</th></tr></thead><tbody>`;
+      rows.forEach(r=>{
+        const rv=r.roi!==null?(r.roi>=5?'var(--ok)':r.roi>=2?'var(--warn)':'var(--red)'):'var(--ink4)';
+        t+=`<tr style="border-bottom:0.5px solid var(--rule)">
+          <td style="padding:6px 12px;font-family:'DM Mono',monospace;font-size:11px">${r.date}</td>
+          <td class="num" style="padding:6px 8px">$${Math.round(r.ms).toLocaleString()}</td>
+          <td class="num" style="padding:6px 8px">$${Math.round(r.gs).toLocaleString()}</td>
+          <td class="num" style="padding:6px 8px;font-weight:600;color:var(--accent)">$${Math.round(r.sp).toLocaleString()}</td>
+          <td class="num" style="padding:6px 8px">${Math.round(r.clicks).toLocaleString()}</td>
+          <td class="num" style="padding:6px 8px">${Math.round(r.purchases).toLocaleString()}</td>
+          <td class="num" style="padding:6px 8px">${r.cpc>0?'$'+r.cpc.toFixed(1):'—'}</td>
+          <td class="num" style="padding:6px 8px">${r.gross!==null?'$'+Math.round(r.gross).toLocaleString():'—'}</td>
+          <td class="num" style="padding:6px 8px;color:var(--warn)">${r.disc!==null?'$'+Math.round(Math.abs(r.disc)).toLocaleString():'—'}</td>
+          <td class="num" style="padding:6px 8px;color:var(--red)">${r.ret!==null?'$'+Math.round(Math.abs(r.ret)).toLocaleString():'—'}</td>
+          <td class="num" style="padding:6px 8px;font-weight:600;color:var(--accent)">${r.net!==null?'$'+Math.round(r.net).toLocaleString():'—'}</td>
+          <td class="num" style="padding:6px 8px;color:${rv};font-weight:700">${r.roi!==null&&r.roi>0?r.roi.toFixed(2)+'×':'—'}</td>
+        </tr>`;
+      });
+      inner.innerHTML=t+'</tbody></table>';
+    }
+  }
+}
+
 </script>
 </body>
 </html>
